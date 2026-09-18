@@ -6,8 +6,8 @@ interface Canco {
 }
 
 
-function imprimir(canco:Canco): void{
-    if (canco!==null) {
+function imprimir(canco: Canco): void {
+    if (canco !== null) {
         console.log(canco);
     }
     else {
@@ -38,12 +38,12 @@ const cancons: Canco[] = [
 ]
 
 let titol: string = "Chicago";
+
 const songsSearch: Canco[] = cancons.filter(
     (c: Canco) => {
-        return c.titol === titol;
+        return c.titol === titol && c.durada > 120;
     }
 );
 
 console.log(songsSearch);
-
-export {}
+export { }
