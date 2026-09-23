@@ -1,11 +1,11 @@
-interface Canco{
+interface Canco {
     id: string;
     titol: string;
     artista: string;
     durada: number;
 }
 
-interface Track{
+interface Track {
     title: string;
     duration: number;
 }
@@ -39,14 +39,17 @@ const cancons: Canco[] = [
 
 const songsString: string[] = cancons.map(
     (c: Canco) => {
-        let text: string = `${c.titol} (${c.artista} - durada: ${c.durada})`;
+        let minuts: number = Math.floor(c.durada / 60);
+        let segons: number = c.durada % 60;
+        
+        let text: string = `${c.titol} (${c.artista} - minuts: ${minuts} segons: ${segons})`;
         return text.trim();
     }
 )
 
 const tracks: Track[] = cancons.map(
     (c: Canco) => {
-        return {title: c.titol, duration: c.durada}
+        return { title: c.titol, duration: c.durada }
     }
 )
 
