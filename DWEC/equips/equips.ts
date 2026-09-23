@@ -52,18 +52,17 @@ const equips: Equip[] = [
     }
 ];
 
-function equipTitular(equips: Equip[], nomEquip: string): Jugador[] {
-    const equip = equips.find(
-        (e: Equip) => e.nom === nomEquip
+function equipTitular(equips: Equip[], nom: string): Jugador[] {
+    const equipSel: Equip | undefined = equips.find(
+        (e: Equip) => { return e.nom === nom; }
     );
 
-    if (equip === undefined) {
-        return [];
+    if (equipSel === undefined) {
+        return []
     }
-
-    return equip.jugadors.filter(
-        (j: Jugador) => j.titular === true
-    );
+    return equipSel.jugadors.filter(
+        (j: Jugador) => { return j.titular; }
+    )
 }
 
 const nomEquip: string = "RCD Espanyol";
