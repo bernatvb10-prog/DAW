@@ -1,6 +1,7 @@
 interface Jugador {
     nom: string;
     titular: boolean;
+    dorsal: number;
 }
 
 interface Equip {
@@ -10,19 +11,22 @@ interface Equip {
 
 const equips: Equip[] = [
     {
-        nom: "Espanyol",
+        nom: "RCD Espanyol",
         jugadors: [
             {
                 nom: "Urko",
-                titular: true
+                titular: true,
+                dorsal: 4
             },
             {
                 nom: "Roberto Fernández",
-                titular: true
+                titular: true,
+                dorsal: 9
             },
             {
                 nom: "Leandro Cabrera",
-                titular: false
+                titular: false,
+                dorsal: 6
             }
         ]
     },
@@ -31,17 +35,39 @@ const equips: Equip[] = [
         jugadors: [
             {
                 nom: "Oblak",
-                titular: true
+                titular: true,
+                dorsal: 13
             },
             {
                 nom: "Marcos Llorente",
-                titular: true
+                titular: true,
+                dorsal: 14
             },
             {
                 nom: "Julian Álvarez",
-                titular: false
+                titular: false,
+                dorsal: 19
             }
         ]
     }
 ];
 
+function equipTitular(equips: Equip[], nomEquip: string): Jugador[] {
+    const equip = equips.find(
+        (e: Equip) => e.nom === nomEquip
+    );
+
+    if (equip === undefined) {
+        return [];
+    }
+
+    return equip.jugadors.filter(
+        (j: Jugador) => j.titular === true
+    );
+}
+
+const nomEquip: string = "RCD Espanyol";
+
+const jugadorsTitulars: Jugador[] = equipTitular(equips, nomEquip);
+
+console.log(jugadorsTitulars);
