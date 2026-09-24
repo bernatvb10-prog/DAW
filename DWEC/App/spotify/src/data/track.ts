@@ -11,7 +11,7 @@ export const tracks: Track[] = [
         id: "2B-CX",
         title: "Rattle and Hum",
         artist: "U2",
-        duration: 65
+        duration: 90
     },
     {
         id: "3B-TX",
@@ -23,6 +23,6 @@ export const tracks: Track[] = [
         id: "3B-TXY",
         title: "Chicago",
         artist: "Michael Jackson",
-        duration: 180
+        duration: 190
     },
 ]
