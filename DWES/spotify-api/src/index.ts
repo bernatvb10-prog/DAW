@@ -25,6 +25,43 @@ app.get("/tracks/:id", (req: Request, res: Response) => {
     return res.status(200).json(track);
 });
 
+// Saber totes les llistes de reproducció d'un usuari
+
+// /usuaris/:id/playlists
+
+// Les últimes cançons que ha escoltat un usuari
+
+// /usuaris/:id/songs/recents
+// /usuaris/:id/historial
+
+// Les ultimes cançons que hem carregat a l'Spotify
+
+// /songs/uploaded/latest
+
+// Totes les cançons de una playlist de un usuari
+
+// /usuaris/:id/playlist/:idPlayList/songs
+
+// El meu perfil
+
+// /usuaris/profile
+
+// El perfil de un altre usuari
+
+// /usuaris/:id/profile
+
+// Musica mes reproduida
+
+// /songs/popular
+
+// Musica mes reproduida de un artista en concret
+
+// /artists/:id/songs/popular
+
+// L'artista amb mes reproduccions
+
+// /artists/reproductions/popular
+
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
 });
