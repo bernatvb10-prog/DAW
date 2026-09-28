@@ -13,7 +13,7 @@ const tbody: HTMLTableSectionElement = document.createElement("tbody");
 
 const cercar: (textABuscar: string) => void = (textABuscar:string) => {
     const llistaTracks: Track[] = tracks.filter(
-        (t: Track) => { return t.title.trim().toLowerCase() === textABuscar.toLowerCase() }
+        (t: Track) => { return t.title.toLowerCase().includes(textABuscar.trim().toLowerCase()); }
     );
     tbody.innerHTML = "";
     llistaCancons(llistaTracks, tbody);
