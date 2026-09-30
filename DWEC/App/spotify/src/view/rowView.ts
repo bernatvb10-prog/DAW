@@ -12,8 +12,12 @@ export function createRowSong(track: Track, mostrarInfoCanço: (track: Track) =>
     durationTd.textContent = track.duration.toString();
     durationTd.addEventListener("click", () => mostrarInfoCanço(track));
 
+    const reproduccionsTd: HTMLTableCellElement = document.createElement("td");
+    reproduccionsTd.textContent = track.reproduccions.toString();
+
     songtr.appendChild(titleTd);
     songtr.appendChild(durationTd);
+    songtr.appendChild(reproduccionsTd);
 
 
 
