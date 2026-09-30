@@ -13,7 +13,19 @@ const cardTrack: HTMLDivElement = document.createElement("div");
 cardTrack.className = "cardTrack";
 
 function emplenarCard(track: Track): void {
-    cardTrack.textContent = `${track.title} - ${track.artist}`;
+    cardTrack.textContent = "";
+
+    const textTrack: HTMLParagraphElement = document.createElement("p");
+    textTrack.textContent = `${track.title} - ${track.artist}`;
+
+    const tancarButton: HTMLButtonElement = document.createElement("button");
+    tancarButton.textContent = "X";
+    tancarButton.addEventListener("click", () => {
+        cardTrack.textContent = "";
+    });
+
+    cardTrack.appendChild(textTrack);
+    cardTrack.appendChild(tancarButton);
 }
 
 const seleccionarCanço: (track: Track) => void = (track: Track): void => {
