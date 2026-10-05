@@ -57,37 +57,6 @@ app.get("/artists/:id", (req: Request, res: Response) => {
     return res.status(200).json(artist[0]);
 });
 
-// Saber totes les llistes de reproducció d'un usuari
-//usuari/:id/playlist
-
-// Les ultimes cançons que ha escoltat un usuari
-
-// usuaris/:id/songs/latest
-// usuaris/:id/historial
-
-//Ultimes cançons que s'han carregat a l'aplicatiu
-
-// /songs/uploaded/latest
-
-// totes les cançons d'una playlist d'un usuari
-
-// /usuaris/:id/playlist/:idPlayList/songs
-
-// /usuaris/profile (me)
-
-// El perfil d'un altre usuari
-// /usuaris/:id/profile
-
-// Musica més repruduïda
-// /songs/popular
-
-// Més reproduida d'un artista
-// /artists/:id/songs/popular
-
-// /artists/followers/popular
-
-// /artists/reproductions/popular
-
 app.post("/tracks", (req: Request, res: Response) => {
     const track: Track = req.body;
     if (!isValidTrack(track)) {
