@@ -32,7 +32,7 @@ app.get("/tracks/:id", (req: Request, res: Response) => {
     const track: TrackBD | undefined = tracks.find(
         (t: TrackBD) => { return t.id === idTrack }
     );
-    if (track) {
+    if (!track) {
         return res.status(404).json({ message: `Track ${idTrack} not found` });
     }
     return res.status(200).json(track);
