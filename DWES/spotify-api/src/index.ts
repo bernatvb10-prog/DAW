@@ -9,6 +9,10 @@ import { artists } from "./data/artist/artist";
 import { ArtistBD } from "./interfaces/artist/artistBD";
 import { getCanonicalCountry, isValidArtist } from "./validators/artist.validator";
 import { Artist } from "./interfaces/artist/artist";
+import { Country } from "./interfaces/country/country";
+import { isValidCountry } from "./validators/country.validator";
+import { CountryBD } from "./interfaces/country/countryBD";
+import { countries } from "./data/country/country";
 
 
 
@@ -158,6 +162,25 @@ app.post("/artists", (req: Request, res: Response) => {
     artists.push(artistRecord);
 
     return res.status(201).json(artistRecord);
+});
+
+// POST DE COUNTRY
+app.post("/countries", (req: Request, res: Response) => {
+    const country: Country = req.body;
+    if (!isValidCountry(country)) {
+        return res.status(400).json({ message: "Invalid country" });
+    }
+
+    const uuid: string = randomUUID()
+
+    const countryRecord: CountryBD = {
+        id: uuid,
+        nom: country.nom.trim().replace(/\s+/g, " "),
+    };
+
+    countries.push(countryRecord);
+
+    return res.status(201).json(countryRecord);
 });
 
 
