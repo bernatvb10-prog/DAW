@@ -6,13 +6,13 @@ import { Track } from "./interfaces/track/track";
 import { isValidTrack } from "./validators/track.validator";
 import { randomUUID } from "crypto";
 import { artists } from "./data/artist/artist";
-import { ArtistBD } from "./interfaces/artist/artistBD";
 import { getCanonicalCountry, isValidArtist } from "./validators/artist.validator";
 import { Artist } from "./interfaces/artist/artist";
 import { Country } from "./interfaces/country/country";
 import { isValidCountry } from "./validators/country.validator";
 import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
+import { ArtistBD } from "./interfaces/artist/artistBD";
 
 
 
@@ -48,13 +48,13 @@ app.get("/artists", (_req: Request, res: Response) => {
 
 app.get("/artists/:id", (req: Request, res: Response) => {
     const idArtist: string = req.params.id as string;
-    const artist: ArtistBD[] = artists.filter(
+    const artist: ArtistBD | undefined = artists.find(
         (a: ArtistBD) => { return a.id === idArtist }
     );
-    if (artist.length === 0) {
+    if (!artist) {
         return res.status(404).json({ message: `Artist ${idArtist} not found` });
     }
-    return res.status(200).json(artist[0]);
+    return res.status(200).json(artist);
 });
 
 app.post("/tracks", (req: Request, res: Response) => {
@@ -150,6 +150,21 @@ app.post("/countries", (req: Request, res: Response) => {
     countries.push(countryRecord);
 
     return res.status(201).json(countryRecord);
+});
+
+app.get("/countries", (_req: Request, res: Response) => {
+    return res.status(200).json(countries);
+});
+
+app.get("/countries/:id", (req: Request, res: Response) => {
+    const idCountry: string = req.params.id as string;
+    const country: CountryBD | undefined = countries.find(
+        (a: CountryBD) => { return a.id === idCountry }
+    );
+    if (!country) {
+        return res.status(404).json({ message: `Country ${idCountry} not found` });
+    }
+    return res.status(200).json(country);
 });
 
 
