@@ -13,9 +13,10 @@ import { isValidCountry } from "./validators/country.validator";
 import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
-import { createTrack, getAllTracks, getTrackById } from "./Services/trackService";
+import { createTrack, getAllTracks, getTrackById, putTrackById } from "./Services/trackService";
 import { ErrorService } from "./interfaces/error/errorService";
 import { CreateSuccessService } from "./interfaces/error/createSucessService";
+import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 
 
 const port: number = 3000;
@@ -73,27 +74,14 @@ app.post("/tracks", (req: Request, res: Response) => {
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
     const idTrack: string = req.params.id as string;
+    const result: UpdateSuccessService<TrackBD> | ErrorService = putTrackById(idTrack, req.body);
 
-    const track: Track = req.body;
-    if (!isValidTrack(track)) {
-        return res.status(400).json({ message: "Invalid data" });
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    const trackIndex: number = tracks.findIndex((track: TrackBD) => track.id === idTrack);
-    if (trackIndex === -1) {
-        return res.status(404).json({ message: `Track not found` });
-    }
-
-    const updatedTrack: TrackBD = {
-        id: idTrack,
-        title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist.trim().replace(/\s+/g, " "),
-        duration: track.duration
-    };
-
-    tracks[trackIndex] = updatedTrack;
-
-    return res.status(200).json(updatedTrack);
+    return res.status(result.code).json(result);
 });
 
 app.delete("/tracks/:id", (req: Request, res: Response) => {
