@@ -1,5 +1,5 @@
 export interface Artist {
-    artistName: string;
-    realName: string;
-    country: string;
+        artistName: string;
+        realName: string;
+        country: string;
 }
