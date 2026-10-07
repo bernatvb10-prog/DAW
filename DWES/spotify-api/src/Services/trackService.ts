@@ -52,5 +52,5 @@ export function putTrackById(idTrack: string, track: Track): UpdateSuccessServic
         duration: track.duration
     };
 
-    return { success: true, code: 200, data: updatedTrack };
+    return { success: true, code: 200, data: updatedTrack, index: trackIndex };
 }
