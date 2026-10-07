@@ -13,7 +13,7 @@ import { isValidCountry } from "./validators/country.validator";
 import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
-
+import { getAllTracks } from "./Services/trackService";
 
 
 const port: number = 3000;
@@ -27,7 +27,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 
 app.get("/tracks", (_req: Request, res: Response) => {
-    return res.status(200).json(tracks);
+    return res.status(200).json(getAllTracks());
 });
 
 
