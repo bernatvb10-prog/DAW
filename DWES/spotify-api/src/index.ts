@@ -13,7 +13,7 @@ import { isValidCountry } from "./validators/country.validator";
 import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
-import { createTrack, deleteTrack, getAllArtists, getAllTracks, getTrackById, putTrackById } from "./Services/trackService";
+import { createTrack, deleteTrack, getAllArtists, getAllTracks, getArtistById, getTrackById, putTrackById } from "./Services/trackService";
 import { ErrorService } from "./interfaces/error/errorService";
 import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
@@ -50,12 +50,10 @@ app.get("/artists", (_req: Request, res: Response) => {
 });
 
 app.get("/artists/:id", (req: Request, res: Response) => {
-    const idArtist: string = req.params.id as string;
-    const artist: ArtistBD | undefined = artists.find(
-        (a: ArtistBD) => { return a.id === idArtist }
-    );
+    const artist: ArtistBD | undefined = getArtistById(req.params.id as string);
+
     if (!artist) {
-        return res.status(404).json({ message: `Artist ${idArtist} not found` });
+        return res.status(404).json({ message: `Artist not found` });
     }
     return res.status(200).json(artist);
 });
