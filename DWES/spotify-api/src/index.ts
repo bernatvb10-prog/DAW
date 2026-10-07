@@ -13,10 +13,12 @@ import { isValidCountry } from "./validators/country.validator";
 import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
-import { createTrack, getAllTracks, getTrackById, putTrackById } from "./Services/trackService";
+import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrackById } from "./Services/trackService";
 import { ErrorService } from "./interfaces/error/errorService";
 import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
+import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
+import { error } from "console";
 
 
 const port: number = 3000;
@@ -87,15 +89,18 @@ app.put("/tracks/:id", (req: Request, res: Response) => {
 });
 
 app.delete("/tracks/:id", (req: Request, res: Response) => {
-    const idTrack: string = req.params.id as string;
-    const trackIndex: number = tracks.findIndex((track: TrackBD) => track.id === idTrack);
-    if (trackIndex === -1) {
-        return res.status(404).json({ message: "Track not found" });
+
+    const result: DeleteSuccessService | ErrorService = deleteTrack(req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    tracks.splice(trackIndex, 1);
+    const index:number = (result as DeleteSuccessService).index
+    tracks.splice(index, 1);
 
-    return res.status(204).json({ message: "Track eliminated" });
+    return res.status(result.code).json(result);
 });
 
 app.post("/artists", (req: Request, res: Response) => {

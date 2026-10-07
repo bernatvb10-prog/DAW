@@ -6,6 +6,7 @@ import { isValidTrack } from "../validators/track.validator";
 import { ErrorService } from "../interfaces/error/errorService";
 import { CreateSuccessService } from "../interfaces/error/createSucessService";
 import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
+import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
 
 export function getAllTracks(): TrackBD[] {
     return tracks;
@@ -53,4 +54,15 @@ export function putTrackById(idTrack: string, track: Track): UpdateSuccessServic
     };
 
     return { success: true, code: 200, data: updatedTrack, index: trackIndex };
+}
+
+export function deleteTrack(idTrack: string): DeleteSuccessService | ErrorService {
+
+    const trackIndex: number = tracks.findIndex((track: TrackBD) => track.id === idTrack);
+
+    if (trackIndex === -1) {
+        return { success: false, code: 404, message: "Track not found" };
+    }
+
+    return { success: true, code: 204, index: trackIndex };
 }
