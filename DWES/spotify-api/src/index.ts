@@ -13,7 +13,7 @@ import { isValidCountry } from "./validators/country.validator";
 import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
-import { getAllTracks } from "./Services/trackService";
+import { getAllTracks, getTrackById } from "./Services/trackService";
 
 
 const port: number = 3000;
@@ -32,12 +32,10 @@ app.get("/tracks", (_req: Request, res: Response) => {
 
 
 app.get("/tracks/:id", (req: Request, res: Response) => {
-    const idTrack: string = req.params.id as string;
-    const track: TrackBD | undefined = tracks.find(
-        (t: TrackBD) => { return t.id === idTrack }
-    );
+    const track: TrackBD | undefined = getTrackById(req.params.id as string);
+    
     if (!track) {
-        return res.status(404).json({ message: `Track ${idTrack} not found` });
+        return res.status(404).json({ message: `Track not found` });
     }
     return res.status(200).json(track);
 });
