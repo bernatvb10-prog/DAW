@@ -15,7 +15,7 @@ import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
 import { createTrack, getAllTracks, getTrackById } from "./Services/trackService";
 import { ErrorService } from "./interfaces/error/errorService";
-import { SuccessService } from "./interfaces/error/sucessService";
+import { CreateSuccessService } from "./interfaces/error/createSucessService";
 
 
 const port: number = 3000;
@@ -59,7 +59,7 @@ app.get("/artists/:id", (req: Request, res: Response) => {
 
 app.post("/tracks", (req: Request, res: Response) => {
 
-    const result: SuccessService<TrackBD> | ErrorService = createTrack(req.body);
+    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -67,7 +67,7 @@ app.post("/tracks", (req: Request, res: Response) => {
     }
 
 
-    tracks.push((result as SuccessService<TrackBD>).data);
+    tracks.push((result as CreateSuccessService<TrackBD>).data);
     return res.status(result.code).json(result);
 });
 
