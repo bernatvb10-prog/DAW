@@ -74,6 +74,7 @@ app.post("/tracks", (req: Request, res: Response) => {
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
     const idTrack: string = req.params.id as string;
+    const trackIndex: number = tracks.findIndex((track: TrackBD) => track.id === idTrack);
     const result: UpdateSuccessService<TrackBD> | ErrorService = putTrackById(idTrack, req.body);
 
     if (!result.success) {
@@ -81,6 +82,8 @@ app.put("/tracks/:id", (req: Request, res: Response) => {
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
+    const updatedTrack:TrackBD = ((result as UpdateSuccessService<TrackBD>).data)
+    tracks[trackIndex] = updatedTrack;
     return res.status(result.code).json(result);
 });
 
