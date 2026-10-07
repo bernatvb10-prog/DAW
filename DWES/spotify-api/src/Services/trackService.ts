@@ -36,13 +36,13 @@ export function createTrack(track: Track): CreateSuccessService<TrackBD> | Error
 
 }
 
-export function putTrackById(idTrack: string, track: Track): UpdateSuccessService<TrackBD> | ErrorService {
+export function putTrackById(track: Track, idTrack: string): UpdateSuccessService<TrackBD> | ErrorService {
     if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
-    const trackIndex: number = tracks.findIndex((track: TrackBD) => track.id === idTrack);
-    if (trackIndex === -1) {
+    const index: number = tracks.findIndex((t: TrackBD) => { return t.id === idTrack; });
+    if (index === -1) {
         return { success: false, code: 404, message: "Track not found" };
     }
 
@@ -53,7 +53,7 @@ export function putTrackById(idTrack: string, track: Track): UpdateSuccessServic
         duration: track.duration
     };
 
-    return { success: true, code: 200, data: updatedTrack, index: trackIndex };
+    return { success: true, code: 200, index: index, data: updatedTrack };
 }
 
 export function deleteTrack(idTrack: string): DeleteSuccessService | ErrorService {

@@ -75,16 +75,16 @@ app.post("/tracks", (req: Request, res: Response) => {
 });
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
-    const idTrack: string = req.params.id as string;
-    const result: UpdateSuccessService<TrackBD> | ErrorService = putTrackById(idTrack, req.body);
+    const result: UpdateSuccessService<TrackBD> | ErrorService = putTrackById(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    const updatedTrack: TrackBD = ((result as UpdateSuccessService<TrackBD>).data)
-    tracks[(result as UpdateSuccessService<TrackBD>).index] = updatedTrack;
+    const index: number = (result as UpdateSuccessService<TrackBD>).index;
+    tracks[index] = (result as UpdateSuccessService<TrackBD>).data;
+
     return res.status(result.code).json(result);
 });
 
@@ -97,7 +97,7 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    const index:number = (result as DeleteSuccessService).index
+    const index: number = (result as DeleteSuccessService).index
     tracks.splice(index, 1);
 
     return res.status(result.code).json(result);
