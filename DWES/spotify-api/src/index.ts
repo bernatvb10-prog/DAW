@@ -20,7 +20,7 @@ import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
-import { getAllCountries, getCountryById } from "./Services/countryService";
+import { createCountry, getAllCountries, getCountryById } from "./Services/countryService";
 
 
 const port: number = 3000;
@@ -158,23 +158,16 @@ app.get("/countries/:id", (req: Request, res: Response) => {
     return res.status(200).json(country);
 });
 
-// POST DE COUNTRY
 app.post("/countries", (req: Request, res: Response) => {
-    const country: Country = req.body;
-    if (!isValidCountry(country)) {
-        return res.status(400).json({ message: "Invalid country" });
+    const result: CreateSuccessService<CountryBD> | ErrorService = createCountry(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    const uuid: string = randomUUID()
-
-    const countryRecord: CountryBD = {
-        id: uuid,
-        nom: country.nom.trim().replace(/\s+/g, " "),
-    };
-
-    countries.push(countryRecord);
-
-    return res.status(201).json(countryRecord);
+    countries.push((result as CreateSuccessService<CountryBD>).data);
+    return res.status(result.code).json(result);
 });
 
 
