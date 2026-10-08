@@ -14,7 +14,7 @@ import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrackById } from "./Services/trackService";
-import { getAllArtists, getArtistById } from "./Services/artistService";
+import { createArtist, getAllArtists, getArtistById } from "./Services/artistService";
 import { ErrorService } from "./interfaces/error/errorService";
 import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
@@ -102,23 +102,18 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
     return res.status(result.code).json(result);
 });
 
+
 app.post("/artists", (req: Request, res: Response) => {
-    const artist: Artist = req.body;
-    if (!isValidArtist(artist)) {
-        return res.status(400).json({ message: "Invalid data or country" });
+
+    const result: CreateSuccessService<ArtistBD> | ErrorService = createArtist(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    const idartista: string = randomUUID()
-    const artistRecord: ArtistBD = {
-        id: idartista,
-        artistName: artist.artistName.trim().replace(/\s+/g, " "),
-        realName: artist.realName.trim().replace(/\s+/g, " "),
-        country: getCanonicalCountry(artist.country)
-    };
-
-    artists.push(artistRecord);
-
-    return res.status(201).json(artistRecord);
+    artists.push((result as CreateSuccessService<ArtistBD>).data);
+    return res.status(result.code).json(result);
 });
 
 // POST DE COUNTRY
