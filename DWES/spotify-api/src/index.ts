@@ -59,6 +59,21 @@ app.get("/artists/:id", (req: Request, res: Response) => {
     return res.status(200).json(artist);
 });
 
+app.post("/artists", (req: Request, res: Response) => {
+
+    const result: CreateSuccessService<ArtistBD> | ErrorService = createArtist(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
+    }
+
+    artists.push((result as CreateSuccessService<ArtistBD>).data);
+    return res.status(result.code).json(result);
+});
+
+
+
 app.post("/tracks", (req: Request, res: Response) => {
 
     const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
@@ -103,18 +118,7 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
 });
 
 
-app.post("/artists", (req: Request, res: Response) => {
 
-    const result: CreateSuccessService<ArtistBD> | ErrorService = createArtist(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    artists.push((result as CreateSuccessService<ArtistBD>).data);
-    return res.status(result.code).json(result);
-});
 
 // POST DE COUNTRY
 app.post("/countries", (req: Request, res: Response) => {
