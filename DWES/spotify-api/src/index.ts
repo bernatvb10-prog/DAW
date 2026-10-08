@@ -46,6 +46,49 @@ app.get("/tracks/:id", (req: Request, res: Response) => {
     return res.status(200).json(track);
 });
 
+app.post("/tracks", (req: Request, res: Response) => {
+
+    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
+    }
+
+
+    tracks.push((result as CreateSuccessService<TrackBD>).data);
+    return res.status(result.code).json(result);
+});
+
+app.put("/tracks/:id", (req: Request, res: Response) => {
+    const result: UpdateSuccessService<TrackBD> | ErrorService = putTrackById(req.body, req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
+    }
+
+    const index: number = (result as UpdateSuccessService<TrackBD>).index;
+    tracks[index] = (result as UpdateSuccessService<TrackBD>).data;
+
+    return res.status(result.code).json(result);
+});
+
+app.delete("/tracks/:id", (req: Request, res: Response) => {
+
+    const result: DeleteSuccessService | ErrorService = deleteTrack(req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
+    }
+
+    const index: number = (result as DeleteSuccessService).index
+    tracks.splice(index, 1);
+
+    return res.status(result.code).json(result);
+});
+
 app.get("/artists", (_req: Request, res: Response) => {
     return res.status(200).json(getAllArtists());
 });
@@ -100,51 +143,6 @@ app.delete("/artists/:id", (req: Request, res: Response) => {
 
     return res.status(result.code).json(result);
 });
-
-app.post("/tracks", (req: Request, res: Response) => {
-
-    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-
-    tracks.push((result as CreateSuccessService<TrackBD>).data);
-    return res.status(result.code).json(result);
-});
-
-app.put("/tracks/:id", (req: Request, res: Response) => {
-    const result: UpdateSuccessService<TrackBD> | ErrorService = putTrackById(req.body, req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as UpdateSuccessService<TrackBD>).index;
-    tracks[index] = (result as UpdateSuccessService<TrackBD>).data;
-
-    return res.status(result.code).json(result);
-});
-
-app.delete("/tracks/:id", (req: Request, res: Response) => {
-
-    const result: DeleteSuccessService | ErrorService = deleteTrack(req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as DeleteSuccessService).index
-    tracks.splice(index, 1);
-
-    return res.status(result.code).json(result);
-});
-
-
 
 
 // POST DE COUNTRY
