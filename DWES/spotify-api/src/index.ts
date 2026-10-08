@@ -20,6 +20,7 @@ import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
+import { getAllCountries } from "./Services/countryService";
 
 
 const port: number = 3000;
@@ -145,7 +146,7 @@ app.delete("/artists/:id", (req: Request, res: Response) => {
 });
 
 app.get("/countries", (_req: Request, res: Response) => {
-    return res.status(200).json(countries);
+    return res.status(200).json(getAllCountries());
 });
 
 app.get("/countries/:id", (req: Request, res: Response) => {
