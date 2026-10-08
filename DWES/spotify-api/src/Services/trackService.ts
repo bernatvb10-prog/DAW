@@ -69,10 +69,5 @@ export function deleteTrack(idTrack: string): DeleteSuccessService | ErrorServic
     return { success: true, code: 204, index: trackIndex };
 }
 
-export function getAllArtists(): ArtistBD[] {
-    return artists;
-}
 
-export function getArtistById(idArtist: string): ArtistBD | undefined {
-    return artists.find((a: ArtistBD) => { return a.id === idArtist });
-}
+
