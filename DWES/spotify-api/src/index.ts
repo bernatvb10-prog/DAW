@@ -144,6 +144,20 @@ app.delete("/artists/:id", (req: Request, res: Response) => {
     return res.status(result.code).json(result);
 });
 
+app.get("/countries", (_req: Request, res: Response) => {
+    return res.status(200).json(countries);
+});
+
+app.get("/countries/:id", (req: Request, res: Response) => {
+    const idCountry: string = req.params.id as string;
+    const country: CountryBD | undefined = countries.find(
+        (a: CountryBD) => { return a.id === idCountry }
+    );
+    if (!country) {
+        return res.status(404).json({ message: `Country ${idCountry} not found` });
+    }
+    return res.status(200).json(country);
+});
 
 // POST DE COUNTRY
 app.post("/countries", (req: Request, res: Response) => {
@@ -162,21 +176,6 @@ app.post("/countries", (req: Request, res: Response) => {
     countries.push(countryRecord);
 
     return res.status(201).json(countryRecord);
-});
-
-app.get("/countries", (_req: Request, res: Response) => {
-    return res.status(200).json(countries);
-});
-
-app.get("/countries/:id", (req: Request, res: Response) => {
-    const idCountry: string = req.params.id as string;
-    const country: CountryBD | undefined = countries.find(
-        (a: CountryBD) => { return a.id === idCountry }
-    );
-    if (!country) {
-        return res.status(404).json({ message: `Country ${idCountry} not found` });
-    }
-    return res.status(200).json(country);
 });
 
 
