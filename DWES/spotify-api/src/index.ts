@@ -20,7 +20,7 @@ import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
-import { createCountry, getAllCountries, getCountryById } from "./Services/countryService";
+import { createCountry, getAllCountries, getCountryById, putCountryById } from "./Services/countryService";
 
 
 const port: number = 3000;
@@ -167,6 +167,20 @@ app.post("/countries", (req: Request, res: Response) => {
     }
 
     countries.push((result as CreateSuccessService<CountryBD>).data);
+    return res.status(result.code).json(result);
+});
+
+app.put("/countries/:id", (req: Request, res: Response) => {
+    const result: UpdateSuccessService<CountryBD> | ErrorService = putCountryById(req.body, req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
+    }
+
+    const index: number = (result as UpdateSuccessService<CountryBD>).index;
+    countries[index] = (result as UpdateSuccessService<CountryBD>).data;
+
     return res.status(result.code).json(result);
 });
 
