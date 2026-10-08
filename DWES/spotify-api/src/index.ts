@@ -20,7 +20,7 @@ import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
-import { getAllCountries } from "./Services/countryService";
+import { getAllCountries, getCountryById } from "./Services/countryService";
 
 
 const port: number = 3000;
@@ -150,12 +150,10 @@ app.get("/countries", (_req: Request, res: Response) => {
 });
 
 app.get("/countries/:id", (req: Request, res: Response) => {
-    const idCountry: string = req.params.id as string;
-    const country: CountryBD | undefined = countries.find(
-        (a: CountryBD) => { return a.id === idCountry }
-    );
+    const country: CountryBD | undefined = getCountryById(req.params.id as string);
+
     if (!country) {
-        return res.status(404).json({ message: `Country ${idCountry} not found` });
+        return res.status(404).json({ message: `Country not found` });
     }
     return res.status(200).json(country);
 });
