@@ -14,7 +14,7 @@ import { CountryBD } from "./interfaces/country/countryBD";
 import { countries } from "./data/country/country";
 import { ArtistBD } from "./interfaces/artist/artistBD";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrackById } from "./Services/trackService";
-import { createArtist, getAllArtists, getArtistById, putArtistById } from "./Services/artistService";
+import { createArtist, deleteArtist, getAllArtists, getArtistById, putArtistById } from "./Services/artistService";
 import { ErrorService } from "./interfaces/error/errorService";
 import { CreateSuccessService } from "./interfaces/error/createSucessService";
 import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
@@ -82,6 +82,21 @@ app.put("/artists/:id", (req: Request, res: Response) => {
 
     const index: number = (result as UpdateSuccessService<ArtistBD>).index;
     artists[index] = (result as UpdateSuccessService<ArtistBD>).data;
+
+    return res.status(result.code).json(result);
+});
+
+app.delete("/artists/:id", (req: Request, res: Response) => {
+
+    const result: DeleteSuccessService | ErrorService = deleteArtist(req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
+    }
+
+    const index: number = (result as DeleteSuccessService).index
+    artists.splice(index, 1);
 
     return res.status(result.code).json(result);
 });

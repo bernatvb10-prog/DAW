@@ -6,6 +6,7 @@ import { CreateSuccessService } from "../interfaces/error/createSucessService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { getCanonicalCountry, isValidArtist } from "../validators/artist.validator";
 import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
+import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
 
 export function getAllArtists(): ArtistBD[] {
     return artists;
@@ -42,7 +43,7 @@ export function putArtistById(artist: Artist, idArtist: string): UpdateSuccessSe
 
     const index: number = artists.findIndex((a: ArtistBD) => { return a.id === idArtist; });
     if (index === -1) {
-        return { success: false, code: 404, message: "Track not found" };
+        return { success: false, code: 404, message: "Artist not found" };
     }
 
     const updatedArtist: ArtistBD = {
@@ -53,4 +54,16 @@ export function putArtistById(artist: Artist, idArtist: string): UpdateSuccessSe
     };
 
     return { success: true, code: 200, index: index, data: updatedArtist };
+}
+
+
+export function deleteArtist(idArtist: string): DeleteSuccessService | ErrorService {
+
+    const trackIndex: number = artists.findIndex((artist: ArtistBD) => artist.id === idArtist);
+
+    if (trackIndex === -1) {
+        return { success: false, code: 404, message: "Artist not found" };
+    }
+
+    return { success: true, code: 204, index: trackIndex };
 }
