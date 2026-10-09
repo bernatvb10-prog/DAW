@@ -26,6 +26,7 @@ import { trackRouter } from "./routes/trackRoutes";
 import { deleteArtistController, getAllArtistsController, getArtistByIdController, postArtistController, putArtistController } from "./controllers/artistController";
 import { artistRouter } from "./routes/artistRoutes";
 import { getAllCountriesController, getCountryByIdController, postCountryController, putCountryController } from "./controllers/countryController";
+import { countryRouter } from "./routes/countryRoutes";
 
 
 const port: number = 3000;
@@ -41,22 +42,7 @@ app.use("/tracks", trackRouter);
 
 app.use("/artists", artistRouter);
 
-app.get("/countries", (_req: Request, res: Response) => {
-    return getAllCountriesController(_req, res);
-});
-
-app.get("/countries/:id", (req: Request, res: Response) => {
-    return getCountryByIdController(req, res);
-});
-
-app.post("/countries", (req: Request, res: Response) => {
-    return postCountryController(req, res);
-});
-
-app.put("/countries/:id", (req: Request, res: Response) => {
-    return putCountryController(req, res);
-});
-
+app.use("/countries", countryRouter);
 
 app.listen(port, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
