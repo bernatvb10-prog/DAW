@@ -21,6 +21,7 @@ import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
 import { createCountry, getAllCountries, getCountryById, putCountryById } from "./Services/countryService";
+import { getAllTracksController } from "./controllers/tracksController";
 
 
 const port: number = 3000;
@@ -34,7 +35,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 
 app.get("/tracks", (_req: Request, res: Response) => {
-    return res.status(200).json(getAllTracks());
+    return getAllTracksController(res);
 });
 
 
