@@ -4,7 +4,7 @@ import { Artist } from "../interfaces/artist/artist";
 import { ArtistBD } from "../interfaces/artist/artistBD";
 import { CreateSuccessService } from "../interfaces/error/createSucessService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { getCanonicalCountry, isValidArtist } from "../validators/artist.validator";
+import { isValidArtist } from "../validators/artist.validator";
 import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
 
@@ -28,7 +28,7 @@ export function createArtist(artist: Artist): CreateSuccessService<ArtistBD> | E
         id: idartista,
         artistName: artist.artistName.trim().replace(/\s+/g, " "),
         realName: artist.realName.trim().replace(/\s+/g, " "),
-        country: getCanonicalCountry(artist.country)
+        country: artist.country
     };
 
     return { success: true, code: 201, data: artistRecord };
