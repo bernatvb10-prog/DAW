@@ -21,7 +21,7 @@ import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
 import { createCountry, getAllCountries, getCountryById, putCountryById } from "./Services/countryService";
-import { getAllTracksController, getTrackByIdController } from "./controllers/tracksController";
+import { getAllTracksController, getTrackByIdController, postTrackController } from "./controllers/tracksController";
 
 
 const port: number = 3000;
@@ -44,17 +44,7 @@ app.get("/tracks/:id", (req: Request, res: Response) => {
 });
 
 app.post("/tracks", (req: Request, res: Response) => {
-
-    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-
-    tracks.push((result as CreateSuccessService<TrackBD>).data);
-    return res.status(result.code).json(result);
+    return postTrackController(req, res);
 });
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
