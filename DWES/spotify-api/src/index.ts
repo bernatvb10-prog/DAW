@@ -24,6 +24,7 @@ import { createCountry, getAllCountries, getCountryById, putCountryById } from "
 import { deleteTrackController, getAllTracksController, getTrackByIdController, postTrackController, putTrackController } from "./controllers/tracksController";
 import { trackRouter } from "./routes/trackRoutes";
 import { deleteArtistController, getAllArtistsController, getArtistByIdController, postArtistController, putArtistController } from "./controllers/artistController";
+import { artistRouter } from "./routes/artistRoutes";
 
 
 const port: number = 3000;
@@ -37,25 +38,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.use("/tracks", trackRouter);
 
-app.get("/artists", (_req: Request, res: Response) => {
-    return getAllArtistsController(_req, res);
-});
-
-app.get("/artists/:id", (req: Request, res: Response) => {
-    return getArtistByIdController(req, res);
-});
-
-app.post("/artists", (req: Request, res: Response) => {
-    return postArtistController(req, res);
-});
-
-app.put("/artists/:id", (req: Request, res: Response) => {
-    return putArtistController(req, res);
-});
-
-app.delete("/artists/:id", (req: Request, res: Response) => {
-    return deleteArtistController(req, res);
-});
+app.use("/artists", artistRouter);
 
 app.get("/countries", (_req: Request, res: Response) => {
     return res.status(200).json(getAllCountries());
