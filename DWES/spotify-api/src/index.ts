@@ -23,6 +23,7 @@ import { error } from "console";
 import { createCountry, getAllCountries, getCountryById, putCountryById } from "./Services/countryService";
 import { deleteTrackController, getAllTracksController, getTrackByIdController, postTrackController, putTrackController } from "./controllers/tracksController";
 import { trackRouter } from "./routes/trackRoutes";
+import { deleteArtistController, getAllArtistsController, getArtistByIdController, postArtistController, putArtistController } from "./controllers/artistController";
 
 
 const port: number = 3000;
@@ -37,58 +38,23 @@ app.get("/", (_req: Request, res: Response) => {
 app.use("/tracks", trackRouter);
 
 app.get("/artists", (_req: Request, res: Response) => {
-    return res.status(200).json(getAllArtists());
+    return getAllArtistsController(_req, res);
 });
 
 app.get("/artists/:id", (req: Request, res: Response) => {
-    const artist: ArtistBD | undefined = getArtistById(req.params.id as string);
-
-    if (!artist) {
-        return res.status(404).json({ message: `Artist not found` });
-    }
-    return res.status(200).json(artist);
+    return getArtistByIdController(req, res);
 });
 
 app.post("/artists", (req: Request, res: Response) => {
-
-    const result: CreateSuccessService<ArtistBD> | ErrorService = createArtist(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    artists.push((result as CreateSuccessService<ArtistBD>).data);
-    return res.status(result.code).json(result);
+    return postArtistController(req, res);
 });
 
 app.put("/artists/:id", (req: Request, res: Response) => {
-    const result: UpdateSuccessService<ArtistBD> | ErrorService = putArtistById(req.body, req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as UpdateSuccessService<ArtistBD>).index;
-    artists[index] = (result as UpdateSuccessService<ArtistBD>).data;
-
-    return res.status(result.code).json(result);
+    return putArtistController(req, res);
 });
 
 app.delete("/artists/:id", (req: Request, res: Response) => {
-
-    const result: DeleteSuccessService | ErrorService = deleteArtist(req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as DeleteSuccessService).index
-    artists.splice(index, 1);
-
-    return res.status(result.code).json(result);
+    return deleteArtistController(req, res);
 });
 
 app.get("/countries", (_req: Request, res: Response) => {
