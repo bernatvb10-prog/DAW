@@ -7,7 +7,7 @@ import { tracks } from "../data/track/track";
 import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
 
-export function getAllTracksController(res: Response): Response {
+export function getAllTracksController(_req: Request, res: Response): Response {
     return res.status(200).json(getAllTracks());
 }
 

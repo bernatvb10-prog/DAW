@@ -22,6 +22,7 @@ import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
 import { createCountry, getAllCountries, getCountryById, putCountryById } from "./Services/countryService";
 import { deleteTrackController, getAllTracksController, getTrackByIdController, postTrackController, putTrackController } from "./controllers/tracksController";
+import { trackRouter } from "./routes/trackRoutes";
 
 
 const port: number = 3000;
@@ -33,25 +34,7 @@ app.get("/", (_req: Request, res: Response) => {
     return res.json(JSON.stringify(APICONFIG));
 });
 
-app.get("/tracks", (_req: Request, res: Response) => {
-    return getAllTracksController(res);
-});
-
-app.get("/tracks/:id", (req: Request, res: Response) => {
-    return getTrackByIdController(req, res);
-});
-
-app.post("/tracks", (req: Request, res: Response) => {
-    return postTrackController(req, res);
-});
-
-app.put("/tracks/:id", (req: Request, res: Response) => {
-    return putTrackController(req, res);
-});
-
-app.delete("/tracks/:id", (req: Request, res: Response) => {
-    return deleteTrackController(req, res);
-});
+app.use("/tracks", trackRouter);
 
 app.get("/artists", (_req: Request, res: Response) => {
     return res.status(200).json(getAllArtists());
