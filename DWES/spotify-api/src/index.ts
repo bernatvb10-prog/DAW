@@ -25,6 +25,7 @@ import { deleteTrackController, getAllTracksController, getTrackByIdController, 
 import { trackRouter } from "./routes/trackRoutes";
 import { deleteArtistController, getAllArtistsController, getArtistByIdController, postArtistController, putArtistController } from "./controllers/artistController";
 import { artistRouter } from "./routes/artistRoutes";
+import { getAllCountriesController, getCountryByIdController, postCountryController, putCountryController } from "./controllers/countryController";
 
 
 const port: number = 3000;
@@ -41,42 +42,19 @@ app.use("/tracks", trackRouter);
 app.use("/artists", artistRouter);
 
 app.get("/countries", (_req: Request, res: Response) => {
-    return res.status(200).json(getAllCountries());
+    return getAllCountriesController(_req, res);
 });
 
 app.get("/countries/:id", (req: Request, res: Response) => {
-    const country: CountryBD | undefined = getCountryById(req.params.id as string);
-
-    if (!country) {
-        return res.status(404).json({ message: `Country not found` });
-    }
-    return res.status(200).json(country);
+    return getCountryByIdController(req, res);
 });
 
 app.post("/countries", (req: Request, res: Response) => {
-    const result: CreateSuccessService<CountryBD> | ErrorService = createCountry(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    countries.push((result as CreateSuccessService<CountryBD>).data);
-    return res.status(result.code).json(result);
+    return postCountryController(req, res);
 });
 
 app.put("/countries/:id", (req: Request, res: Response) => {
-    const result: UpdateSuccessService<CountryBD> | ErrorService = putCountryById(req.body, req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(errorResult.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as UpdateSuccessService<CountryBD>).index;
-    countries[index] = (result as UpdateSuccessService<CountryBD>).data;
-
-    return res.status(result.code).json(result);
+    return putCountryController(req, res);
 });
 
 
