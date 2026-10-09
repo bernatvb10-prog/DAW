@@ -21,7 +21,7 @@ import { UpdateSuccessService } from "./interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccessService";
 import { error } from "console";
 import { createCountry, getAllCountries, getCountryById, putCountryById } from "./Services/countryService";
-import { getAllTracksController } from "./controllers/tracksController";
+import { getAllTracksController, getTrackByIdController } from "./controllers/tracksController";
 
 
 const port: number = 3000;
@@ -40,12 +40,7 @@ app.get("/tracks", (_req: Request, res: Response) => {
 
 
 app.get("/tracks/:id", (req: Request, res: Response) => {
-    const track: TrackBD | undefined = getTrackById(req.params.id as string);
-
-    if (!track) {
-        return res.status(404).json({ message: `Track not found` });
-    }
-    return res.status(200).json(track);
+    return getTrackByIdController(req, res);
 });
 
 app.post("/tracks", (req: Request, res: Response) => {
