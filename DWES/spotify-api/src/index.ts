@@ -3,6 +3,7 @@ import { APICONFIG } from "./config/apiConfig";
 import { trackRouter } from "./routes/trackRoutes";
 import { artistRouter } from "./routes/artistRoutes";
 import { countryRouter } from "./routes/countryRoutes";
+import { userRouter } from "./routes/userRoutes";
 
 
 const port: number = 3000;
@@ -19,6 +20,8 @@ app.use("/tracks", trackRouter);
 app.use("/artists", artistRouter);
 
 app.use("/countries", countryRouter);
+
+app.use("/users", userRouter);
 
 app.listen(port, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);

@@ -1,4 +1,4 @@
-import { Artist } from "./artist";
+import { User } from "./user";
 
 
 export interface UserBD extends User {

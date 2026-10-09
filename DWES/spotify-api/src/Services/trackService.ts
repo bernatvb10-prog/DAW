@@ -7,8 +7,6 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { CreateSuccessService } from "../interfaces/error/createSucessService";
 import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
-import { artists } from "../data/artist/artist";
-import { ArtistBD } from "../interfaces/artist/artistBD";
 
 export function getAllTracks(): TrackBD[] {
     return tracks;
