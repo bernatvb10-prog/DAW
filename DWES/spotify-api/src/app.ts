@@ -4,6 +4,7 @@ import { trackRouter } from "./routes/trackRoutes";
 import { artistRouter } from "./routes/artistRoutes";
 import { countryRouter } from "./routes/countryRoutes";
 import { userRouter } from "./routes/userRoutes";
+import { playlistRouter } from "./routes/playlistRoutes";
 
 
 export const app: Express = express();
@@ -17,3 +18,4 @@ app.use("/tracks", trackRouter);
 app.use("/artists", artistRouter);
 app.use("/countries", countryRouter);
 app.use("/users", userRouter);
+app.use("/playlists", playlistRouter);
