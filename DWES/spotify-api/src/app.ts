@@ -6,9 +6,7 @@ import { countryRouter } from "./routes/countryRoutes";
 import { userRouter } from "./routes/userRoutes";
 
 
-const port: number = 3000;
-
-const app: Express = express();
+export const app: Express = express();
 app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => {
@@ -16,13 +14,6 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.use("/tracks", trackRouter);
-
 app.use("/artists", artistRouter);
-
 app.use("/countries", countryRouter);
-
 app.use("/users", userRouter);
-
-app.listen(port, () => {
-    console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
-});
