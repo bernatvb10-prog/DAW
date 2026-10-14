@@ -30,7 +30,7 @@ export function isValidArtist(artist: Artist): boolean | string | undefined {
     // valido que l'identificador de pais sigui valid
 
     const countryOK: CountryBD | undefined = countries.find(
-        (c: CountryBD) => { c.id === artist.country }
+        (c: CountryBD) => { return c.id === artist.country }
     )
 
     if (!countryOK) {
