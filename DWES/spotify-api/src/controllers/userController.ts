@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrackById } from "../Services/trackService";
+import { createTrack, deleteTrack, getAllTracks, getTrackById, updateTrack } from "../Services/trackService";
 import { TrackBD } from "../interfaces/track/trackBD";
 import { CreateSuccessService } from "../interfaces/error/createSucessService";
 import { ErrorService } from "../interfaces/error/errorService";
