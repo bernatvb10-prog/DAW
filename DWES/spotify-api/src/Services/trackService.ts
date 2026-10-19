@@ -1,5 +1,3 @@
-import { randomUUID } from "crypto";
-import { tracks } from "../data/track/track";
 import { Track } from "../interfaces/track/track";
 import { TrackBD } from "../interfaces/track/trackBD";
 import { isValidTrack } from "../validators/track.validator";
