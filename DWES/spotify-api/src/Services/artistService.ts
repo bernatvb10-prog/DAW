@@ -7,36 +7,73 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { isValidArtist } from "../validators/artist.validator";
 import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
+import { SelectSuccessService } from "../interfaces/error/selectSuccessService";
 
-export function getAllArtists(): ArtistBD[] {
-    return artists;
+export async function getAllArtists(): Promise<ArtistBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Artist`;
+
+    const result: IResult<ArtistBD> = await request.query(queryText);
+    return result.recordset;
 }
 
-export function getArtistById(idArtist: string): ArtistBD | undefined {
-    return artists.find((a: ArtistBD) => { return a.id === idArtist });
+export async function getArtistById(idArtist: string): Promise<SelectSuccessService<ArtistBD> | ErrorService> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Artist Where Artist.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idArtist);
+
+    const result: IResult<ArtistBD> = await request.query(queryText);
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Artist not found"
+        }
+    }
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    }
 }
 
-export function createArtist(artist: Artist): CreateSuccessService<ArtistBD> | ErrorService {
+export async function createArtist(artist: Artist): Promise<CreateSuccessService<number> | ErrorService> {
 
     if (!isValidArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
-    const idartista: string = randomUUID()
-    
-    const artistRecord: ArtistBD = {
-        id: idartista,
-        artistName: artist.artistName.trim().replace(/\s+/g, " "),
-        realName: artist.realName.trim().replace(/\s+/g, " "),
-        country: artist.country
-    };
+    const artistName: string = artist.artistName.trim().replace(/\s+/g, " ");
+    const realName: string = artist.realName.trim().replace(/\s+/g, " ");
 
-    return { success: true, code: 201, data: artistRecord };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `INSERT INTO ARTIST(name, pseudonym, country_id)
+        VALUES(@realName, @artistName, @country_id)
+    `;
+
+    request.input("realName", sql.NVarChar, realName);
+    request.input("artistName", sql.NVarChar, artistName);
+    request.input("country_id", sql.UniqueIdentifier, artist.country);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, code: 201, data: result.rowsAffected[0] };
 }
 
+
 export function putArtistById(artist: Artist, idArtist: string): UpdateSuccessService<ArtistBD> | ErrorService {
-    
-    
+
+
     if (!isValidArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }

@@ -1,7 +1,5 @@
-import { countries } from "../data/country/country";
 import { Artist } from "../interfaces/artist/artist";
 import { MAXARTISTNAME, MAXREALNAME } from "../interfaces/artist/artist.constants";
-import { CountryBD } from "../interfaces/country/countryBD";
 
 export function isValidArtist(artist: Artist): boolean | string | undefined {
     // valido que hi hagi un artista (body)
@@ -27,15 +25,6 @@ export function isValidArtist(artist: Artist): boolean | string | undefined {
         return false;
     }
 
-    // valido que l'identificador de pais sigui valid
-
-    const countryOK: CountryBD | undefined = countries.find(
-        (c: CountryBD) => { return c.id === artist.country }
-    )
-
-    if (!countryOK) {
-        return false;
-    }
 
     return true;
 }
