@@ -46,22 +46,28 @@ export async function getTrackById(idTrack: string): Promise<SelectSuccessServic
     }
 }
 
-export function createTrack(track: Track): CreateSuccessService<TrackBD> | ErrorService {
+export async function createTrack(track: Track): Promise<CreateSuccessService<number> | ErrorService> {
 
     if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
-    const uuid: string = randomUUID()
+    const title: string = track.title.trim().replace(/\s+/g, " ")
 
-    const trackRecord: TrackBD = {
-        id: uuid,
-        title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist.trim().replace(/\s+/g, " "),
-        duration: track.duration
-    };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-    return { success: true, code: 201, data: trackRecord };
+    const queryText: string = `INSERT INTO TRACK(title, artist_id, duration)
+        VALUES(@title, @artist_id, @duration)
+    `;
+
+    request.input("title", sql.NVarChar, title);
+    request.input("artist_id", sql.UniqueIdentifier, track.artist);
+    request.input("duration", sql.Numeric, track.duration);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, code: 201, data: result.rowsAffected[0] };
 
 }
 

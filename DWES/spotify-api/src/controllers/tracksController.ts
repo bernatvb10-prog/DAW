@@ -23,8 +23,8 @@ export async function getTrackByIdController(req: Request, res: Response): Promi
 
 }
 
-export function postTrackController(req: Request, res: Response): Response {
-    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
+export async function postTrackController(req: Request, res: Response): Promise<Response> {
+    const result: CreateSuccessService<TrackBD> | ErrorService = await createTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -32,7 +32,6 @@ export function postTrackController(req: Request, res: Response): Response {
     }
 
 
-    tracks.push((result as CreateSuccessService<TrackBD>).data);
     return res.status(result.code).json(result);
 
 }
