@@ -1,4 +1,4 @@
-import type { Track } from "../Interfaces/Track";
+import type { Track } from "../Model/Track";
 
 export const tracks: Track[] = [{
     title: "Rattle and hum",
