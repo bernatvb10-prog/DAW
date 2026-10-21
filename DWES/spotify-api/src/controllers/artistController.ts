@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { createArtist, deleteArtist, getAllArtists, getArtistById, putArtistById } from "../Services/artistService";
+import { createArtist, deleteArtist, getAllArtists, getArtistById, updateArtist } from "../Services/artistService";
 import { ArtistBD } from "../interfaces/artist/artistBD";
 import { CreateSuccessService } from "../interfaces/error/createSucessService";
 import { artists } from "../data/artist/artist";
@@ -34,16 +34,13 @@ export async function postArtistController(req: Request, res: Response): Promise
     return res.status(result.code).json(result);
 }
 
-export function putArtistController(req: Request, res: Response): Response {
-    const result: UpdateSuccessService<ArtistBD> | ErrorService = putArtistById(req.body, req.params.id as string);
+export async function updateArtistController(req: Request, res: Response): Promise<Response> {
+    const result: UpdateSuccessService<number> | ErrorService = await updateArtist(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
-
-    const index: number = (result as UpdateSuccessService<ArtistBD>).index;
-    artists[index] = (result as UpdateSuccessService<ArtistBD>).data;
 
     return res.status(result.code).json(result);
 }
