@@ -9,7 +9,7 @@ function App() {
   const totalTracks: number = tracks.length;
   const random: number = Math.floor(Math.random() * totalTracks);
   const track: Track = tracks[random];
-  const trackInfo: TrackView = {
+  const trackWr: TrackView = {
     ...track,
     reproduccions: Math.floor(Math.random() * 10000)
   };
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-      <SongCard trackInfo={trackInfo} />
+      <SongCard trackInfo={trackWr} />
     </>
   )
 }
