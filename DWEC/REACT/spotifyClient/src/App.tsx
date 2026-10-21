@@ -11,7 +11,7 @@ function App() {
   const track: Track = tracks[random];
   const trackInfo: TrackView = {
     ...track,
-    totalReproduccions: Math.floor(Math.random() * 10000)
+    reproduccions: Math.floor(Math.random() * 10000)
   };
 
 
