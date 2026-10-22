@@ -101,7 +101,7 @@ sql.connect = async () => ({
     }
 });
 
-const { app } = require("../src/app");
+const { app } = require("../app");
 let server;
 let baseUrl;
 
@@ -346,15 +346,15 @@ test("Spotify API HTTP behavior", async (t) => {
     });
 
     await t.test("entity validators accept boundary values and reject invalid relationships", () => {
-        const { isValidTrack } = require("../src/validators/track.validator");
-        const { isValidArtist } = require("../src/validators/artist.validator");
-        const { isValidCountry } = require("../src/validators/country.validator");
-        const { isValidUser } = require("../src/validators/user.validator");
-        const { isValidPlaylist } = require("../src/validators/playlist.validator");
-        const { isValidHistory } = require("../src/validators/history.validator");
-        const { isValidAlbum } = require("../src/validators/album.validator");
-        const { isValidPlaylistTrack } = require("../src/validators/playlistTrack.validator");
-        const { isValidAlbumTrack } = require("../src/validators/albumTrack.validator");
+        const { isValidTrack } = require("../validators/track.validator");
+        const { isValidArtist } = require("../validators/artist.validator");
+        const { isValidCountry } = require("../validators/country.validator");
+        const { isValidUser } = require("../validators/user.validator");
+        const { isValidPlaylist } = require("../validators/playlist.validator");
+        const { isValidHistory } = require("../validators/history.validator");
+        const { isValidAlbum } = require("../validators/album.validator");
+        const { isValidPlaylistTrack } = require("../validators/playlistTrack.validator");
+        const { isValidAlbumTrack } = require("../validators/albumTrack.validator");
 
         assert.equal(isValidTrack({ title: "T".repeat(100), artist: artistId, duration: 1 }), true);
         assert.equal(isValidTrack({ title: " ", artist: artistId, duration: 1 }), false);
