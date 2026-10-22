@@ -1,37 +1,49 @@
 import { render, screen } from "@testing-library/react";
+import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import SongCard from "../Components/Songs/SongCard";
 import type { TrackView } from "../Components/Songs/Types/TrackView";
 
 describe("SongCard", () => {
-  it("renders the title, artist, duration and play count", () => {
+  it("renders the values passed to it without depending on sample song literals", () => {
+    const id = randomUUID();
     const track: TrackView = {
-      title: "Sunday bloody Sunday",
-      artist: "U2",
-      duration: 180,
-      reproduccions: 4567,
+      title: `track-${id}`,
+      artist: `artist-${id}`,
+      duration: Math.floor(Math.random() * 1000) + 1,
+      reproduccions: Math.floor(Math.random() * 10000),
     };
 
     render(<SongCard trackInfo={track} />);
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Sunday bloody Sunday" }),
+      screen.getByRole("heading", { level: 1, name: track.title }),
     ).toBeTruthy();
-    expect(screen.getByText("U2")).toBeTruthy();
-    expect(screen.getByText("180")).toBeTruthy();
-    expect(screen.getByText("Total Reproduccions: 4567")).toBeTruthy();
+    expect(screen.getByText(track.artist)).toBeTruthy();
+    expect(screen.getByText(String(track.duration))).toBeTruthy();
+    expect(
+      screen.getByText(`Total Reproduccions: ${track.reproduccions}`),
+    ).toBeTruthy();
   });
 
-  it("displays zero reproductions without hiding the value", () => {
+  it("renders zero reproductions for dynamically generated track details", () => {
+    const id = randomUUID();
     const track: TrackView = {
-      title: "New track",
-      artist: "New artist",
-      duration: 1,
+      title: `track-${id}`,
+      artist: `artist-${id}`,
+      duration: Math.floor(Math.random() * 1000) + 1,
       reproduccions: 0,
     };
 
     render(<SongCard trackInfo={track} />);
 
-    expect(screen.getByText("Total Reproduccions: 0")).toBeTruthy();
+    expect(
+      screen.getByRole("heading", { level: 1, name: track.title }),
+    ).toBeTruthy();
+    expect(screen.getByText(track.artist)).toBeTruthy();
+    expect(screen.getByText(String(track.duration))).toBeTruthy();
+    expect(
+      screen.getByText(`Total Reproduccions: ${track.reproduccions}`),
+    ).toBeTruthy();
   });
 });

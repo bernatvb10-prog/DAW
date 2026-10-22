@@ -9,51 +9,66 @@ afterEach(() => {
 });
 
 describe("App", () => {
-  it("renders the selected track with a reproduction count in range", () => {
-    vi.spyOn(Math, "random")
-      .mockReturnValueOnce(0.75)
-      .mockReturnValueOnce(0.4567);
+  it("renders the track and reproduction count calculated from random values", () => {
+    const random = vi.spyOn(Math, "random");
 
-    render(<App />);
+    tracks.forEach((expectedTrack, index) => {
+      const trackRoll = (index + 0.5) / tracks.length;
+      const reproductionsRoll = (index + 1) / (tracks.length + 1);
+      const expectedReproductions = Math.floor(reproductionsRoll * 10000);
 
-    expect(
-      screen.getByRole("heading", { level: 1, name: "Sunday bloody Sunday" }),
-    ).toBeTruthy();
-    expect(screen.getByText("U2")).toBeTruthy();
-    expect(screen.getByText("180")).toBeTruthy();
-    expect(screen.getByText("Total Reproduccions: 4567")).toBeTruthy();
-    expect(Math.random).toHaveBeenCalledTimes(2);
+      random
+        .mockReturnValueOnce(trackRoll)
+        .mockReturnValueOnce(reproductionsRoll);
+
+      const { unmount } = render(<App />);
+
+      expect(
+        screen.getByRole("heading", {
+          level: 1,
+          name: expectedTrack.title,
+        }),
+      ).toBeTruthy();
+      expect(screen.getByText(expectedTrack.artist)).toBeTruthy();
+      expect(screen.getByText(String(expectedTrack.duration))).toBeTruthy();
+      expect(
+        screen.getByText(`Total Reproduccions: ${expectedReproductions}`),
+      ).toBeTruthy();
+
+      unmount();
+    });
+
+    expect(random).toHaveBeenCalledTimes(tracks.length * 2);
   });
 
-  it("can select the first track and generate the minimum reproduction count", () => {
-    vi.spyOn(Math, "random")
-      .mockReturnValueOnce(0)
-      .mockReturnValueOnce(0);
+  it("keeps generated reproduction counts inside the application's range", () => {
+    const random = vi.spyOn(Math, "random");
+    const reproductionRolls = [0, Math.random(), 1 - Number.EPSILON];
 
-    render(<App />);
+    reproductionRolls.forEach((roll, index) => {
+      random
+        .mockReturnValueOnce(index / reproductionRolls.length)
+        .mockReturnValueOnce(roll);
 
-    expect(
-      screen.getByRole("heading", { level: 1, name: "Rattle and hum" }),
-    ).toBeTruthy();
-    expect(screen.getByText("90")).toBeTruthy();
-    expect(screen.getByText("Total Reproduccions: 0")).toBeTruthy();
-  });
+      const { unmount } = render(<App />);
+      const displayedCount = Number(
+        screen.getByText(/^Total Reproduccions: \d+$/).textContent?.replace(
+          "Total Reproduccions: ",
+          "",
+        ),
+      );
 
-  it("can generate the maximum reproduction count", () => {
-    vi.spyOn(Math, "random")
-      .mockReturnValueOnce(0)
-      .mockReturnValueOnce(0.99999);
+      expect(displayedCount).toBe(Math.floor(roll * 10000));
+      expect(displayedCount).toBeGreaterThanOrEqual(0);
+      expect(displayedCount).toBeLessThan(10000);
 
-    render(<App />);
-
-    expect(screen.getByText("Total Reproduccions: 9999")).toBeTruthy();
+      unmount();
+    });
   });
 
   it("does not modify the source track data", () => {
     const originalTracks = structuredClone(tracks);
-    vi.spyOn(Math, "random")
-      .mockReturnValueOnce(0.25)
-      .mockReturnValueOnce(0.5);
+    vi.spyOn(Math, "random").mockReturnValue(Math.random());
 
     render(<App />);
 
