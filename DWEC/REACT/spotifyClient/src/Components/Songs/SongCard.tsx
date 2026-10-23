@@ -7,10 +7,16 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
 
     let [totalReproduccions, setTotalReproduccions] = useState<number>(trackInfo.reproduccions);
     const [liked, setLiked] = useState(false);
+    const [likes, setLikes] = useState(0);
 
     function handleClickPlay() {
         const tr = (prev: number) => { return prev + 1 };
         setTotalReproduccions(tr);
+    }
+
+    function handleClickLike() {
+        setLikes((count) => count + (liked ? -1 : 1));
+        setLiked(!liked);
     }
 
     return (
@@ -22,10 +28,11 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
             <p><button onClick={handleClickPlay}>Play</button></p>
             <button
                 type="button"
-                onClick={() => setLiked(!liked)}
+                onClick={handleClickLike}
             >
                 <img src={liked ? likeVerd : likeBlanc} alt="" width="24" height="24" />
             </button>
+            <span> {likes}</span>
         </>
     )
 }
