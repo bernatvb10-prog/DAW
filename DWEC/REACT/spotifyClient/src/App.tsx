@@ -12,7 +12,7 @@ export function getCurrentDate(): string {
   const year: string = currentDate.getFullYear().toString();
   const month: string = (currentDate.getMonth() + 1).toString();
   const day: string = currentDate.getDate().toString();
-  return `${ day } /${month}/${ year }`;
+  return `${day} /${month}/${year}`;
 }
 
 function App() {
@@ -27,10 +27,14 @@ function App() {
   };
 
 
+  function handleClickRandom() {
+  }
+
   return (
     <>
       <Header title="Spotify" user={randomUser.name} date={today} />
       <SongCard trackInfo={trackWr} />
+      <p><button onClick={handleClickRandom}>Random</button></p >
     </>
   )
 }
