@@ -24,7 +24,7 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
                 type="button"
                 onClick={() => setLiked(!liked)}
             >
-                <img src={liked ? likeVerd : likeBlanc} alt="" />
+                <img src={liked ? likeVerd : likeBlanc} alt="" width="24" height="24" />
             </button>
         </>
     )
