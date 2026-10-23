@@ -19,13 +19,21 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
         setLiked(!liked);
     }
 
+    function handleClickReset() {
+        setTotalReproduccions(0);
+        setLikes(0);
+        setLiked(false);
+    }
+
     return (
         <>
             <h1>{trackInfo.title}</h1>
             <p>{trackInfo.artist}</p>
             <p>{trackInfo.duration}</p>
             <p>Total Reproduccions: {totalReproduccions}</p>
-            <p><button onClick={handleClickPlay}>Play</button></p>
+            <p><button onClick={handleClickPlay}>Play</button><br /><br />
+                <button onClick={handleClickReset}>Reset</button>
+            </p>
             <button
                 type="button"
                 onClick={handleClickLike}
