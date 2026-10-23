@@ -30,12 +30,11 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
             <p>{trackInfo.artist}</p>
             <p>{trackInfo.duration}</p>
             <p>Total Reproduccions: {totalReproduccions}</p>
-            <p>
-                <button type="button" onClick={() => handleClickPlay(1)}>Play 1</button><br /><br />
-                <button type="button" onClick={() => handleClickPlay(5)}>Play 5</button><br /><br />
-                <button type="button" onClick={() => handleClickPlay(10)}>Play 10</button><br /><br />
-                <button onClick={handleClickReset}>Reset</button> <br /><br />
-            </p >
+            <p><button type="button" onClick={() => handleClickPlay(1)}>Play 1</button></p >
+            <p><button type="button" onClick={() => handleClickPlay(5)}>Play 5</button></p >
+            <p><button type="button" onClick={() => handleClickPlay(10)}>Play 10</button></p >
+            <p><button onClick={handleClickReset}>Reset</button></p >
+
             <button
                 type="button"
                 onClick={handleClickLike}
