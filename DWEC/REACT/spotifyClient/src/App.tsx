@@ -7,13 +7,7 @@ import { tracks } from './Data/track';
 import type { Track } from './Model/Track';
 import { users } from './Data/User';
 
-export function getCurrentDate(): string {
-  const currentDate = new Date();
-  const year: string = currentDate.getFullYear().toString();
-  const month: string = (currentDate.getMonth() + 1).toString();
-  const day: string = currentDate.getDate().toString();
-  return `${day} /${month}/${year}`;
-}
+
 
 function getRandomTrack(): TrackView {
   const totalTracks: number = tracks.length;
@@ -28,7 +22,6 @@ function getRandomTrack(): TrackView {
 
 function App() {
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
-  const [today] = useState(getCurrentDate);
   const [trackWr, setTrackWr] = useState<TrackView>(getRandomTrack);
 
 
@@ -42,7 +35,7 @@ function App() {
 
   return (
     <>
-      <Header title="Spotify" user={randomUser.name} date={today} />
+      <Header title="Spotify" user={randomUser.name} />
       <SongCard trackInfo={trackWr} />
       <p><button onClick={handleClickRandom}>Random</button></p >
     </>
