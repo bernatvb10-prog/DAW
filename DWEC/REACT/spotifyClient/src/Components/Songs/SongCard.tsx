@@ -3,36 +3,28 @@ import type { SongCardProps } from "./Types/SongCardProps";
 import likeBlanc from "../../assets/like_blanc.png";
 import likeVerd from "../../assets/like_verd.png";
 
-const SongCard = ({ trackInfo }: SongCardProps) => {
+const SongCard = (props: SongCardProps) => {
 
-    let [totalReproduccions, setTotalReproduccions] = useState<number>(trackInfo.reproduccions);
     const [liked, setLiked] = useState(false);
     const [likes, setLikes] = useState(0);
 
-    function handleClickPlay(reproduccions: number) {
-        setTotalReproduccions((prev: number) => prev + reproduccions);
+    function handleClickPlay() {
+        props.play();
     }
 
     function handleClickLike() {
-        setLikes((count) => count + (liked ? -1 : 1));
-        setLiked(!liked);
     }
 
     function handleClickReset() {
-        setTotalReproduccions(0);
-        setLikes(0);
-        setLiked(false);
     }
 
     return (
         <>
-            <h1>{trackInfo.title}</h1>
-            <p>{trackInfo.artist}</p>
-            <p>{trackInfo.duration}</p>
-            <p>Total Reproduccions: {totalReproduccions}</p>
-            <p><button type="button" onClick={() => handleClickPlay(1)}>Play 1</button></p >
-            <p><button type="button" onClick={() => handleClickPlay(5)}>Play 5</button></p >
-            <p><button type="button" onClick={() => handleClickPlay(10)}>Play 10</button></p >
+            <h1>{props.trackInfo.title}</h1>
+            <p>{props.trackInfo.artist}</p>
+            <p>{props.trackInfo.duration}</p>
+            <p>Total Reproduccions: {props.trackInfo.reproduccions}</p>
+            <p><button type="button" onClick={() => handleClickPlay()}>Play 1</button></p >
             <p><button onClick={handleClickReset}>Reset</button></p >
 
             <button
