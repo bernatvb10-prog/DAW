@@ -1,18 +1,16 @@
-import { useState } from "react";
 import type { SongCardProps } from "./Types/SongCardProps";
 import likeBlanc from "../../assets/like_blanc.png";
 import likeVerd from "../../assets/like_verd.png";
 
 const SongCard = (props: SongCardProps) => {
 
-    const [liked, setLiked] = useState(false);
-    const [likes, setLikes] = useState(0);
 
     function handleClickPlay() {
         props.play();
     }
 
     function handleClickLike() {
+        props.like();
     }
 
     function handleClickReset() {
@@ -31,9 +29,9 @@ const SongCard = (props: SongCardProps) => {
                 type="button"
                 onClick={handleClickLike}
             >
-                <img src={liked ? likeVerd : likeBlanc} alt="" width="24" height="24" />
+                <img src={props.trackInfo.likes.like ? likeVerd : likeBlanc} alt="" width="24" height="24" />
             </button>
-            <span> {likes}</span>
+            <span> {props.trackInfo.likes.totalLikes}</span>
         </>
     )
 }

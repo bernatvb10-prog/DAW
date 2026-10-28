@@ -6,6 +6,7 @@ import type { TrackView } from './Components/Songs/Types/TrackView';
 import { tracks } from './Data/track';
 import type { Track } from './Model/Track';
 import { users } from './Data/User';
+import type { Like } from './Components/Songs/Types/Like';
 
 
 
@@ -17,7 +18,10 @@ function getRandomTrack(): TrackView {
   return {
     ...randomTrack,
     reproduccions: Math.floor(Math.random() * 10000),
-    likes: Math.random() * 10000
+    likes: {
+      like: false,
+      totalLikes: 0
+    }
   };
 }
 
@@ -43,10 +47,29 @@ function App() {
     }));
   }
 
+  function gestionarLikes() {
+    const tr = (prev: TrackView): TrackView => {
+      let increment: number = 1;
+      if (prev.likes.like) {
+        increment = -1;
+      }
+      let likeObj: Like = {
+        like: !prev.likes.like,
+        totalLikes: prev.likes.totalLikes + increment
+      };
+
+      return {
+        ...prev,
+        likes: likeObj
+      }
+    }
+    setTrack(tr);
+  }
+
   return (
     <>
       <Header title="Spotify" user={randomUser.name} />
-      <SongCard trackInfo={track} play={() => incrementarReproduccions()} />
+      <SongCard trackInfo={track} play={() => incrementarReproduccions()} like={() => gestionarLikes()} />
       <p><button onClick={handleClickRandom}>Random</button></p >
     </>
   )
