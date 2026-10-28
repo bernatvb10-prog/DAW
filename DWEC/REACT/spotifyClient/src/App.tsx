@@ -42,7 +42,7 @@ function App() {
 
 
   function handleClickRandom() {
-    setTrack((currentTrack) => ({
+    setTrack(() => ({
       ...getRandomTrack()
     }));
   }
