@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css'
 import Header from './Components/Header/Header';
 import SongCard from './Components/Songs/SongCard'
+import Reproduint from './Components/Reproduint/Reproduint';
 import type { TrackView } from './Components/Songs/Types/TrackView';
 import { tracks } from './Data/track';
 import type { Track } from './Model/Track';
@@ -80,7 +81,14 @@ function App() {
   return (
     <>
       <Header title="Spotify" user={randomUser.name} />
-      <SongCard trackInfo={track} play={() => incrementarReproduccions()} like={() => gestionarLikes()} reset={() => gestionarReset()} />
+      <main className="content-layout">
+        <section className="song-content">
+          <SongCard trackInfo={track} play={() => incrementarReproduccions()} like={() => gestionarLikes()} reset={() => gestionarReset()} />
+        </section>
+        <aside className="now-playing">
+          <Reproduint />
+        </aside>
+      </main>
       <p><button onClick={handleClickRandom}>Random</button></p >
     </>
   )
