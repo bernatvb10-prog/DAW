@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import type { ReproduintProps } from './Types/ReproduintProps';
 
-const Reproduint = () => {
+const Reproduint = (props: ReproduintProps) => {
   const [volume, setVolume] = useState(50);
 
   function baixarVolum() {
@@ -23,6 +24,7 @@ const Reproduint = () => {
         <button type="button" onClick={baixarVolum}>-</button>
         <button type="button" onClick={pujarVolum}>+</button>
       </div>
+      <p>{props.isPlaying ? 'playing song' : 'no song is playing'}</p>
     </section>
   );
 };

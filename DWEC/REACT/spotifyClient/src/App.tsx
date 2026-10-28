@@ -30,6 +30,7 @@ function App() {
 
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [track, setTrack] = useState<TrackView>(getRandomTrack);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   function incrementarReproduccions() {
     const tr = (prev: TrackView): TrackView => {
@@ -39,6 +40,11 @@ function App() {
       }
     }
     setTrack(tr);
+  }
+
+  function handlePlay() {
+    incrementarReproduccions();
+    setIsPlaying(true);
   }
 
 
@@ -83,10 +89,10 @@ function App() {
       <Header title="Spotify" user={randomUser.name} />
       <main className="content-layout">
         <section className="song-content">
-          <SongCard trackInfo={track} play={() => incrementarReproduccions()} like={() => gestionarLikes()} reset={() => gestionarReset()} />
+          <SongCard trackInfo={track} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
         </section>
         <aside className="now-playing">
-          <Reproduint />
+          <Reproduint isPlaying={isPlaying} />
         </aside>
       </main>
       <p><button onClick={handleClickRandom}>Random</button></p >
