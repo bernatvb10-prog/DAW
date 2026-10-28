@@ -24,7 +24,7 @@ const Reproduint = (props: ReproduintProps) => {
         <button type="button" onClick={baixarVolum}>-</button>
         <button type="button" onClick={pujarVolum}>+</button>
       </div>
-      <p>{props.isPlaying ? 'playing song' : 'no song is playing'}</p>
+      <p>{props.playingTrackTitle ?? 'no song is playing'}</p>
     </section>
   );
 };

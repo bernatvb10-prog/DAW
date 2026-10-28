@@ -30,7 +30,7 @@ function App() {
 
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [track, setTrack] = useState<TrackView>(getRandomTrack);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [playingTrackTitle, setPlayingTrackTitle] = useState<string | null>(null);
 
   function incrementarReproduccions() {
     const tr = (prev: TrackView): TrackView => {
@@ -44,7 +44,7 @@ function App() {
 
   function handlePlay() {
     incrementarReproduccions();
-    setIsPlaying(true);
+    setPlayingTrackTitle(track.title);
   }
 
 
@@ -92,7 +92,7 @@ function App() {
           <SongCard trackInfo={track} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
         </section>
         <aside className="now-playing">
-          <Reproduint isPlaying={isPlaying} />
+          <Reproduint playingTrackTitle={playingTrackTitle} />
         </aside>
       </main>
       <p><button onClick={handleClickRandom}>Random</button></p >

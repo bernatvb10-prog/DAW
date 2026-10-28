@@ -1,3 +1,3 @@
 export interface ReproduintProps {
-  isPlaying: boolean;
+  playingTrackTitle: string | null;
 }
