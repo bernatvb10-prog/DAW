@@ -92,7 +92,10 @@ function App() {
           <SongCard trackInfo={track} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
         </section>
         <aside className="now-playing">
-          <Reproduint playingTrackTitle={playingTrackTitle} />
+          <Reproduint
+            playingTrackTitle={playingTrackTitle}
+            stop={() => setPlayingTrackTitle(null)}
+          />
         </aside>
       </main>
       <p><button onClick={handleClickRandom}>Random</button></p >

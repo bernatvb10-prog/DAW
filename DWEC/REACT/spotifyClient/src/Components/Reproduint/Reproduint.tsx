@@ -25,6 +25,9 @@ const Reproduint = (props: ReproduintProps) => {
         <button type="button" onClick={pujarVolum}>+</button>
       </div>
       <p>{props.playingTrackTitle ?? 'no song is playing'}</p>
+      {props.playingTrackTitle !== null && (
+        <button type="button" onClick={props.stop}>Stop</button>
+      )}
     </section>
   );
 };
