@@ -66,10 +66,21 @@ function App() {
     setTrack(tr);
   }
 
+  function gestionarReset() {
+    setTrack((prev) => ({
+      ...prev,
+      reproduccions: 0,
+      likes: {
+        like: false,
+        totalLikes: 0
+      }
+    }));
+  }
+
   return (
     <>
       <Header title="Spotify" user={randomUser.name} />
-      <SongCard trackInfo={track} play={() => incrementarReproduccions()} like={() => gestionarLikes()} />
+      <SongCard trackInfo={track} play={() => incrementarReproduccions()} like={() => gestionarLikes()} reset={() => gestionarReset()} />
       <p><button onClick={handleClickRandom}>Random</button></p >
     </>
   )

@@ -14,6 +14,7 @@ const SongCard = (props: SongCardProps) => {
     }
 
     function handleClickReset() {
+        props.reset();
     }
 
     return (
