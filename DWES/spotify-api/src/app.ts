@@ -1,4 +1,6 @@
 import express, { Express, Request, Response } from "express";
+import cors from "cors"
+import { corsOptions } from "./config/cors";
 import { APICONFIG } from "./config/apiConfig";
 import { trackRouter } from "./routes/trackRoutes";
 import { artistRouter } from "./routes/artistRoutes";
@@ -13,6 +15,7 @@ import { albumTrackRouter } from "./routes/albumTrackRoutes";
 
 export const app: Express = express();
 app.use(express.json());
+app.use(cors(corsOptions));
 
 app.get("/", (_req: Request, res: Response) => {
     return res.json(JSON.stringify(APICONFIG));
