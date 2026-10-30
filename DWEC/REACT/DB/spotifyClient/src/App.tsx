@@ -4,34 +4,38 @@ import Header from './Components/Header/Header';
 import SongCard from './Components/Songs/SongCard'
 import Reproduint from './Components/Reproduint/Reproduint';
 import type { TrackView } from './Components/Songs/Types/TrackView';
-import { tracks } from './Data/track';
 import type { Track } from './Model/Track';
 import { users } from './Data/User';
 import type { Like } from './Components/Songs/Types/Like';
 import ListSongs from './Components/Songs/ListSongs';
 
 
-
-function getRandomTrack(): TrackView {
-  const totalTracks: number = tracks.length;
-  const random: number = Math.floor(Math.random() * totalTracks);
-  const randomTrack: Track = tracks[random];
-
-  return {
-    ...randomTrack,
-    reproduccions: Math.floor(Math.random() * 10000),
-    likes: {
-      like: false,
-      totalLikes: 0
-    }
-  };
-}
-
 function App() {
 
+  const [tracks, setTracks] = useState<Track[]>([]);
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [track, setTrack] = useState<TrackView>(getRandomTrack);
   const [playingTrackTitle, setPlayingTrackTitle] = useState<string | null>(null);
+
+  async function carregarDadesTrack() {
+    const resposta: Response = await fetch("http://localhost:3000/tracks");
+    const listTrack: Track[] = await resposta.json() as Track[];
+    setTracks(listTrack)
+  }
+
+  function getRandomTrack(): TrackView {
+    const random: number = Math.floor(Math.random() * tracks.length);
+    const randomTrack: Track = tracks[random];
+
+    return {
+      ...randomTrack,
+      reproduccions: Math.floor(Math.random() * 10000),
+      likes: {
+        like: false,
+        totalLikes: 0
+      }
+    };
+  }
 
   function incrementarReproduccions() {
     const tr = (prev: TrackView): TrackView => {
@@ -88,15 +92,22 @@ function App() {
   return (
     <>
       <Header title="Spotify" user={randomUser.name} />
-      <main className="content-layout">
-        <table>
-          <thead>
-            <title>List Songs</title>
-          </thead>
-          <tbody>
-            <ListSongs tracks={tracks} />
-          </tbody>
-        </table>
+      <main>
+        {
+          tracks.length > 0 ?
+            <table>
+              <thead>
+                <title>List Songs</title>
+              </thead>
+              <tbody>
+                <ListSongs tracks={tracks} />
+              </tbody>
+            </table>
+            : <p>
+              <button onClick={carregarDadesTrack}>Carregar Tracks</button>
+            </p>
+        }
+
         <section>
           <SongCard trackInfo={track} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
         </section>
