@@ -1,13 +1,8 @@
-.content-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 30%);
-  gap: 2rem;
-  align-items: start;
-}
-
-.song-content,
-.now-playing {
-  min-width: 0;
+table {
+  position: absolute;
+  right: 50px;
+  border: 1px solid black;
+  padding: 3px;
 }
 
 @media (max-width: 640px) {

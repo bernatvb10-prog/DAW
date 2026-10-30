@@ -8,6 +8,8 @@ import { tracks } from './Data/track';
 import type { Track } from './Model/Track';
 import { users } from './Data/User';
 import type { Like } from './Components/Songs/Types/Like';
+import SongRow from './Components/Songs/SongRow';
+import ListSongs from './Components/Songs/ListSongs';
 
 
 
@@ -88,17 +90,23 @@ function App() {
     <>
       <Header title="Spotify" user={randomUser.name} />
       <main className="content-layout">
-        <section className="song-content">
+        <table>
+          <thead>
+            <title>List Songs</title>
+          </thead>
+          <tbody>
+            <ListSongs tracks={tracks} />
+          </tbody>
+        </table>
+        <section>
           <SongCard trackInfo={track} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
         </section>
-        <aside className="now-playing">
-          <Reproduint
-            playingTrackTitle={playingTrackTitle}
-            stop={() => setPlayingTrackTitle(null)}
-          />
-        </aside>
+        <p><button onClick={handleClickRandom}>Random</button></p >
+        <Reproduint
+          playingTrackTitle={playingTrackTitle}
+          stop={() => setPlayingTrackTitle(null)}
+        />
       </main>
-      <p><button onClick={handleClickRandom}>Random</button></p >
     </>
   )
 }
