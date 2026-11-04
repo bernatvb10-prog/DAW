@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css'
 import Header from './Components/Header/Header';
 import SongCard from './Components/Songs/SongCard'
@@ -22,6 +22,12 @@ function App() {
     const listTrack: Track[] = await resposta.json() as Track[];
     setTracks(listTrack)
   }
+
+  useEffect(
+    () => {
+      carregarDadesTrack();
+    }, []);
+
 
   function getRandomTrack(): TrackView {
     const random: number = Math.floor(Math.random() * tracks.length);
@@ -104,7 +110,7 @@ function App() {
               </tbody>
             </table>
             : <p>
-              <button onClick={carregarDadesTrack}>Carregar Tracks</button>
+              No track available
             </p>
         }
 
