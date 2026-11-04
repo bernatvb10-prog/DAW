@@ -4,22 +4,23 @@ import Header from './Components/Header/Header';
 import SongCard from './Components/Songs/SongCard'
 import Reproduint from './Components/Reproduint/Reproduint';
 import type { TrackView } from './Components/Songs/Types/TrackView';
-import type { Track } from './Model/Track';
 import { users } from './Data/User';
 import type { Like } from './Components/Songs/Types/Like';
 import ListSongs from './Components/Songs/ListSongs';
+import { ENV } from './Config/env';
+import type { GETTrack } from './APIManagement/Tracks/Interfaces/Track';
 
 
 function App() {
 
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [tracks, setTracks] = useState<GETTrack[]>([]);
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [track, setTrack] = useState<TrackView>(getRandomTrack);
   const [playingTrackTitle, setPlayingTrackTitle] = useState<string | null>(null);
 
   async function carregarDadesTrack() {
-    const resposta: Response = await fetch("http://localhost:3000/tracks");
-    const listTrack: Track[] = await resposta.json() as Track[];
+    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
+    const listTrack: GETTrack[] = await resposta.json() as GETTrack[];
     setTracks(listTrack)
   }
 
@@ -31,7 +32,7 @@ function App() {
 
   function getRandomTrack(): TrackView {
     const random: number = Math.floor(Math.random() * tracks.length);
-    const randomTrack: Track = tracks[random];
+    const randomTrack: GETTrack = tracks[random];
 
     return {
       ...randomTrack,
