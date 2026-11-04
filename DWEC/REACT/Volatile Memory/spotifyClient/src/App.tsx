@@ -99,7 +99,7 @@ function App() {
           </tbody>
         </table>
         <section>
-          <SongCard trackInfo={track} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
+          <SongCard trackInfo={track} isPlaying={playingTrackTitle !== null} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
         </section>
         <p><button onClick={handleClickRandom}>Random</button></p >
         <Reproduint
