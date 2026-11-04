@@ -9,6 +9,8 @@ import type { Track } from './Model/Track';
 import { users } from './Data/User';
 import type { Like } from './Components/Songs/Types/Like';
 import ListSongs from './Components/Songs/ListSongs';
+import Historial from './Components/Historial/Historial';
+import type { HistoryEntry } from './Components/Historial/Types/HistoryEntry';
 
 
 
@@ -32,6 +34,7 @@ function App() {
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [track, setTrack] = useState<TrackView>(getRandomTrack);
   const [playingTrackTitle, setPlayingTrackTitle] = useState<string | null>(null);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   function incrementarReproduccions() {
     const tr = (prev: TrackView): TrackView => {
@@ -46,6 +49,14 @@ function App() {
   function handlePlay() {
     incrementarReproduccions();
     setPlayingTrackTitle(track.title);
+    setHistory((previousHistory) => [
+      ...previousHistory,
+      {
+        id: previousHistory.length,
+        title: track.title,
+        playedAt: new Date()
+      }
+    ]);
   }
 
 
@@ -89,14 +100,15 @@ function App() {
     <>
       <Header title="Spotify" user={randomUser.name} />
       <main className="content-layout">
-        <table>
-          <thead>
-            <title>List Songs</title>
-          </thead>
-          <tbody>
-            <ListSongs tracks={tracks} />
-          </tbody>
-        </table>
+        <div className="song-lists">
+          <table>
+            <caption>Cançons existents</caption>
+            <tbody>
+              <ListSongs tracks={tracks} />
+            </tbody>
+          </table>
+          <Historial entries={history} />
+        </div>
         <section>
           <SongCard trackInfo={track} isPlaying={playingTrackTitle !== null} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
         </section>
