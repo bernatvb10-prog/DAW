@@ -1,13 +1,22 @@
-table {
+.lists-panel {
   position: absolute;
   right: 50px;
+  top: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: calc(100vw - 2rem);
+}
+
+.list-panel {
   border: 1px solid black;
   padding: 3px;
+  overflow-x: auto;
 }
 
 @media (max-width: 640px) {
-  .content-layout {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .lists-panel {
+    position: static;
+    margin: 1rem;
   }
 }

@@ -9,11 +9,14 @@ import type { Like } from './Components/Songs/Types/Like';
 import ListSongs from './Components/Songs/ListSongs';
 import { ENV } from './Config/env';
 import type { GETTrack } from './APIManagement/Tracks/Interfaces/Track';
+import type { GETPlaylist } from './APIManagement/Playlists/Interfaces/Playlist';
+import ListPlaylists from './Components/Playlists/ListPlaylists';
 
 
 function App() {
 
   const [tracks, setTracks] = useState<GETTrack[]>([]);
+  const [playlists, setPlaylists] = useState<GETPlaylist[]>([]);
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [track, setTrack] = useState<TrackView>(getRandomTrack);
   const [playingTrackTitle, setPlayingTrackTitle] = useState<string | null>(null);
@@ -24,9 +27,16 @@ function App() {
     setTracks(listTrack)
   }
 
+  async function carregarDadesPlaylist() {
+    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/playlists`);
+    const listPlaylist: GETPlaylist[] = await resposta.json() as GETPlaylist[];
+    setPlaylists(listPlaylist);
+  }
+
   useEffect(
     () => {
       carregarDadesTrack();
+      carregarDadesPlaylist();
     }, []);
 
 
@@ -100,20 +110,28 @@ function App() {
     <>
       <Header title="Spotify" user={randomUser.name} />
       <main>
-        {
-          tracks.length > 0 ?
-            <table>
-              <thead>
-                <title>List Songs</title>
-              </thead>
-              <tbody>
-                <ListSongs tracks={tracks} />
-              </tbody>
-            </table>
-            : <p>
-              No track available
-            </p>
-        }
+        <aside className="lists-panel">
+          <section className="list-panel">
+            <h2>Cançons</h2>
+            {
+              tracks.length > 0 ?
+                <table>
+                  <tbody>
+                    <ListSongs tracks={tracks} />
+                  </tbody>
+                </table>
+                : <p>No hi ha cançons disponibles</p>
+            }
+          </section>
+          <section className="list-panel">
+            <h2>Llistes de reproducció</h2>
+            {
+              playlists.length > 0 ?
+                <ListPlaylists playlists={playlists} />
+                : <p>No hi ha llistes de reproducció disponibles</p>
+            }
+          </section>
+        </aside>
 
         <section>
           <SongCard trackInfo={track} play={handlePlay} like={() => gestionarLikes()} reset={() => gestionarReset()} />
