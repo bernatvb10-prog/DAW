@@ -16,26 +16,26 @@ export function getPlaylistById(idPlaylist: string): PlaylistBD | undefined {
     return playlists.find((p: PlaylistBD) => { return p.id === idPlaylist });
 }
 
-export function createPlaylist(playlist: Playlist): CreateSuccessService<PlaylistBD> | ErrorService {
+export function createPlaylist(playlist: Playlist): CreateSuccessService | ErrorService {
 
     if (!isValidPlaylist(playlist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
     const idplaylist: string = randomUUID()
-    
+
     const playlistRecord: PlaylistBD = {
         id: idplaylist,
         title: playlist.title.trim().replace(/\s+/g, " "),
         user: playlist.user
     };
 
-    return { success: true, code: 201, data: playlistRecord };
+    return { success: true, code: 201, data: 1 };
 }
 
 export function putPlaylistById(playlist: Playlist, idPlaylist: string): UpdateSuccessService<PlaylistBD> | ErrorService {
-    
-    
+
+
     if (!isValidPlaylist(playlist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
@@ -51,7 +51,7 @@ export function putPlaylistById(playlist: Playlist, idPlaylist: string): UpdateS
         user: playlist.user
     };
 
-    return { success: true, code: 200, index: index, data: updatedPlaylist };
+    return { success: true, code: 200, data: 1 };
 }
 
 
@@ -63,5 +63,5 @@ export function deletePlaylist(idPlaylist: string): DeleteSuccessService | Error
         return { success: false, code: 404, message: "Playlist not found" };
     }
 
-    return { success: true, code: 204, index: trackIndex };
+    return { success: true, code: 204};
 }

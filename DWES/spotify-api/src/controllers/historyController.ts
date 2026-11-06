@@ -19,13 +19,12 @@ export function getHistoryByIdController(req: Request, res: Response): Response 
 }
 
 export function postHistoryController(req: Request, res: Response): Response {
-    const result: CreateSuccessService<HistoryBD> | ErrorService = createHistory(req.body);
+    const result: CreateSuccessService | ErrorService = createHistory(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    histories.push((result as CreateSuccessService<HistoryBD>).data);
     return res.status(result.code).json(result);
 }

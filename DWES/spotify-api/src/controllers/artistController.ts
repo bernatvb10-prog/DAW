@@ -23,7 +23,7 @@ export async function getArtistByIdController(req: Request, res: Response): Prom
 }
 
 export async function postArtistController(req: Request, res: Response): Promise<Response> {
-    const result: CreateSuccessService<ArtistBD> | ErrorService = await createArtist(req.body);
+    const result: CreateSuccessService | ErrorService = await createArtist(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -53,8 +53,6 @@ export function deleteArtistController(req: Request, res: Response): Response {
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as DeleteSuccessService).index
-    artists.splice(index, 1);
 
     return res.status(result.code).json(result);
 }

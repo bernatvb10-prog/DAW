@@ -8,21 +8,21 @@ import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
 import { albumTracks } from "../data/albumTrack/albumTrack";
 
 
-export function createAlbumTrack(albumTrack: AlbumTrack): CreateSuccessService<AlbumTrackBD> | ErrorService {
+export function createAlbumTrack(albumTrack: AlbumTrack): CreateSuccessService | ErrorService {
 
     if (!isValidAlbumTrack(albumTrack)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
     const idalbumTrack: string = randomUUID()
-    
+
     const albumTrackRecord: AlbumTrackBD = {
         id: idalbumTrack,
         album: albumTrack.album,
         track: albumTrack.track
     };
 
-    return { success: true, code: 201, data: albumTrackRecord };
+    return { success: true, code: 201, data: 1 };
 }
 
 
@@ -34,5 +34,5 @@ export function deleteAlbumTrack(idalbumTrack: string): DeleteSuccessService | E
         return { success: false, code: 404, message: "AlbumTrack not found" };
     }
 
-    return { success: true, code: 204, index: trackIndex };
+    return { success: true, code: 204 };
 }

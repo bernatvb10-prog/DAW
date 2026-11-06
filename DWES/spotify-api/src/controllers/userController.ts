@@ -25,7 +25,7 @@ export function getUserByIdController(req: Request, res: Response): Response {
 }
 
 export function postUserController(req: Request, res: Response): Response {
-    const result: CreateSuccessService<UserBD> | ErrorService = createUser(req.body);
+    const result: CreateSuccessService | ErrorService = createUser(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -33,7 +33,6 @@ export function postUserController(req: Request, res: Response): Response {
     }
 
 
-    users.push((result as CreateSuccessService<UserBD>).data);
     return res.status(result.code).json(result);
 
 }
@@ -47,8 +46,6 @@ export function putUserController(req: Request, res: Response): Response {
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as UpdateSuccessService<UserBD>).index;
-    users[index] = (result as UpdateSuccessService<UserBD>).data;
 
     return res.status(result.code).json(result);
 }
@@ -60,9 +57,6 @@ export function deleteUserController(req: Request, res: Response): Response {
         const errorResult = result as ErrorService;
         return res.status(errorResult.code).json({ message: errorResult.message });
     }
-
-    const index: number = (result as DeleteSuccessService).index
-    users.splice(index, 1);
 
     return res.status(result.code).json(result);
 }

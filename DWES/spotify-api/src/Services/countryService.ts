@@ -15,25 +15,25 @@ export function getCountryById(idCountry: string): CountryBD | undefined {
     return countries.find((c: CountryBD) => { return c.id === idCountry });
 }
 
-export function createCountry(country: Country): CreateSuccessService<CountryBD> | ErrorService {
+export function createCountry(country: Country): CreateSuccessService | ErrorService {
 
     if (!isValidCountry(country)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
     const idCountry: string = randomUUID()
-    
+
     const countryRecord: CountryBD = {
         id: idCountry,
         nom: country.nom.trim().replace(/\s+/g, " ")
     };
 
-    return { success: true, code: 201, data: countryRecord };
+    return { success: true, code: 201, data: 1 };
 }
 
 export function putCountryById(country: Country, idCountry: string): UpdateSuccessService<CountryBD> | ErrorService {
-    
-    
+
+
     if (!isValidCountry(country)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
@@ -48,5 +48,5 @@ export function putCountryById(country: Country, idCountry: string): UpdateSucce
         nom: country.nom.trim().replace(/\s+/g, " "),
     };
 
-    return { success: true, code: 200, index: index, data: updatedCountry };
+    return { success: true, code: 200, data: 1 };
 }

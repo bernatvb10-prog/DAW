@@ -45,7 +45,7 @@ export async function getArtistById(idArtist: string): Promise<SelectSuccessServ
     }
 }
 
-export async function createArtist(artist: Artist): Promise<CreateSuccessService<number> | ErrorService> {
+export async function createArtist(artist: Artist): Promise<CreateSuccessService | ErrorService> {
 
     if (!isValidArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -116,5 +116,5 @@ export function deleteArtist(idArtist: string): DeleteSuccessService | ErrorServ
         return { success: false, code: 404, message: "Artist not found" };
     }
 
-    return { success: true, code: 204, index: trackIndex };
+    return { success: true, code: 204 };
 }

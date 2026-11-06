@@ -16,7 +16,7 @@ export function getUserById(idUser: string): UserBD | undefined {
     return users.find((u: UserBD) => { return u.id === idUser });
 }
 
-export function createUser(user: User): CreateSuccessService<UserBD> | ErrorService {
+export function createUser(user: User): CreateSuccessService | ErrorService {
 
     if (!isValidUser(user)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -30,7 +30,7 @@ export function createUser(user: User): CreateSuccessService<UserBD> | ErrorServ
         country: user.country,
     };
 
-    return { success: true, code: 201, data: userRecord };
+    return { success: true, code: 201, data: 1 };
 }
 
 export function putUserById(user: User, idUser: string): UpdateSuccessService<UserBD> | ErrorService {
@@ -51,7 +51,7 @@ export function putUserById(user: User, idUser: string): UpdateSuccessService<Us
         country: user.country,
     };
 
-    return { success: true, code: 200, index: index, data: updatedUser };
+    return { success: true, code: 200, data: 1 };
 }
 
 
@@ -63,5 +63,5 @@ export function deleteUser(idUser: string): DeleteSuccessService | ErrorService 
         return { success: false, code: 404, message: "User not found" };
     }
 
-    return { success: true, code: 204, index: trackIndex };
+    return { success: true, code: 204};
 }

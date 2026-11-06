@@ -16,14 +16,14 @@ export function getAlbumById(idAlbum: string): AlbumBD | undefined {
     return albums.find((a: AlbumBD) => { return a.id === idAlbum });
 }
 
-export function createAlbum(album: Album): CreateSuccessService<AlbumBD> | ErrorService {
+export function createAlbum(album: Album): CreateSuccessService | ErrorService {
 
     if (!isValidAlbum(album)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
     const idalbum: string = randomUUID()
-    
+
     const albumRecord: AlbumBD = {
         id: idalbum,
         artist: album.artist,
@@ -31,12 +31,12 @@ export function createAlbum(album: Album): CreateSuccessService<AlbumBD> | Error
         name: album.name.trim().replace(/\s+/g, " ")
     };
 
-    return { success: true, code: 201, data: albumRecord };
+    return { success: true, code: 201, data: 1 };
 }
 
 export function putAlbumById(album: Album, idAlbum: string): UpdateSuccessService<AlbumBD> | ErrorService {
-    
-    
+
+
     if (!isValidAlbum(album)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
@@ -53,7 +53,7 @@ export function putAlbumById(album: Album, idAlbum: string): UpdateSuccessServic
         name: album.name.trim().replace(/\s+/g, " ")
     };
 
-    return { success: true, code: 200, index: index, data: updatedAlbum };
+    return { success: true, code: 200, data: 1 };
 }
 
 
@@ -65,5 +65,5 @@ export function deleteAlbum(idAlbum: string): DeleteSuccessService | ErrorServic
         return { success: false, code: 404, message: "Album not found" };
     }
 
-    return { success: true, code: 204, index: trackIndex };
+    return { success: true, code: 204 };
 }

@@ -44,28 +44,28 @@ export async function getTrackById(idTrack: string): Promise<SelectSuccessServic
     }
 }
 
-export async function createTrack(track: Track): Promise<CreateSuccessService<number> | ErrorService> {
+export async function createTrack(track: Track): Promise<CreateSuccessService | ErrorService> {
 
-    if (!isValidTrack(track)) {
-        return { success: false, code: 400, message: "Invalid data" };
-    }
+    if(!isValidTrack(track)) {
+    return { success: false, code: 400, message: "Invalid data" };
+}
 
-    const title: string = track.title.trim().replace(/\s+/g, " ")
+const title: string = track.title.trim().replace(/\s+/g, " ")
 
-    const pool: ConnectionPool = await getConnection();
-    const request: sql.Request = pool.request();
+const pool: ConnectionPool = await getConnection();
+const request: sql.Request = pool.request();
 
-    const queryText: string = `INSERT INTO TRACK(title, artist_id, duration)
+const queryText: string = `INSERT INTO TRACK(title, artist_id, duration)
         VALUES(@title, @artist_id, @duration)
     `;
 
-    request.input("title", sql.NVarChar, title);
-    request.input("artist_id", sql.UniqueIdentifier, track.artist);
-    request.input("duration", sql.Numeric, track.duration);
+request.input("title", sql.NVarChar, title);
+request.input("artist_id", sql.UniqueIdentifier, track.artist);
+request.input("duration", sql.Numeric, track.duration);
 
-    const result: IResult<number> = await request.query(queryText);
+const result: IResult<number> = await request.query(queryText);
 
-    return { success: true, code: 201, data: result.rowsAffected[0] };
+return { success: true, code: 201, data: result.rowsAffected[0] };
 
 }
 
