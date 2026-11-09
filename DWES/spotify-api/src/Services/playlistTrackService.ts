@@ -6,7 +6,34 @@ import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PlaylistTrack } from "../interfaces/playlistTrack/playlistTrack";
 import { PlaylistTrackBD } from "../interfaces/playlistTrack/playlistTrackBD";
+import { TrackBD } from "../interfaces/track/trackBD";
 import { isValidPlaylistTrack } from "../validators/playlistTrack.validator";
+
+export async function getTracksByPlaylistId(idPlaylist: string): Promise<TrackBD[] | undefined> {
+    const pool: ConnectionPool = await getConnection();
+    const playlistRequest: sql.Request = pool.request();
+    playlistRequest.input("id", sql.UniqueIdentifier, idPlaylist);
+
+    const playlistResult: IResult<{ id: string }> = await playlistRequest.query(
+        "SELECT id FROM Playlist WHERE id = @id"
+    );
+
+    if (playlistResult.recordset.length === 0) {
+        return undefined;
+    }
+
+    const tracksRequest: sql.Request = pool.request();
+    tracksRequest.input("playlist_id", sql.UniqueIdentifier, idPlaylist);
+
+    const tracksQuery: string = `SELECT t.id, t.title, a.name AS artist, t.duration
+        FROM PlaylistTracks pt
+        INNER JOIN Track t ON pt.track_id = t.id
+        INNER JOIN Artist a ON t.artist_id = a.id
+        WHERE pt.playlist_id = @playlist_id`;
+    const tracksResult: IResult<TrackBD> = await tracksRequest.query(tracksQuery);
+
+    return tracksResult.recordset;
+}
 
 export async function createPlaylistTrack(
     playlistTrack: PlaylistTrack

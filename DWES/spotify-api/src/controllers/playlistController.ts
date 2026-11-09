@@ -5,6 +5,8 @@ import { CreateSuccessService } from "../interfaces/error/createSucessService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
+import { getTracksByPlaylistId } from "../Services/playlistTrackService";
+import { TrackBD } from "../interfaces/track/trackBD";
 
 
 export async function getAllPlaylistsController(_req: Request, res: Response): Promise<Response> {
@@ -18,6 +20,16 @@ export async function getPlaylistByIdController(req: Request, res: Response): Pr
         return res.status(404).json({ message: `Playlist not found` });
     }
     return res.status(200).json(playlist);
+}
+
+export async function getPlaylistTracksController(req: Request, res: Response): Promise<Response> {
+    const tracks: TrackBD[] | undefined = await getTracksByPlaylistId(req.params.id as string);
+
+    if (!tracks) {
+        return res.status(404).json({ message: "Playlist not found" });
+    }
+
+    return res.status(200).json(tracks);
 }
 
 export async function postPlaylistController(req: Request, res: Response): Promise<Response> {
