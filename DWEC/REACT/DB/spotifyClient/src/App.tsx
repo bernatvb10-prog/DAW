@@ -89,9 +89,19 @@ function App() {
     console.log(result);
   }
 
-  function handlePlay() {
+  function handlePlay(trackToPlay?: GETTrack) {
+    if (trackToPlay) {
+      setTrack((prev) => ({
+        ...trackToPlay,
+        reproduccions: prev.title === trackToPlay.title ? prev.reproduccions : 0,
+        likes: prev.title === trackToPlay.title
+          ? prev.likes
+          : { like: false, totalLikes: 0 }
+      }));
+    }
+
     incrementarReproduccions();
-    setPlayingTrackTitle(track.title);
+    setPlayingTrackTitle(trackToPlay?.title ?? track.title);
   }
 
 
@@ -142,7 +152,7 @@ function App() {
               tracks.length > 0 ?
                 <table>
                   <tbody>
-                    <ListSongs tracks={tracks} />
+                    <ListSongs tracks={tracks} play={handlePlay} />
                   </tbody>
                 </table>
                 : <p>No hi ha cançons disponibles</p>

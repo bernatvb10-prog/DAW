@@ -9,6 +9,7 @@ const SongRow = (props:SongRowProps) => {
             <td>{props.title}</td>
             <td>{props.artist}</td>
             <td>{formatDuration(props.duration)}</td>
+            <td><button type="button" onClick={props.play}>Play</button></td>
         </tr>
     )
 }
