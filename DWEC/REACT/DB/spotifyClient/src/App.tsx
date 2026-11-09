@@ -11,6 +11,7 @@ import { ENV } from './Config/env';
 import type { GETTrack } from './APIManagement/Tracks/Interfaces/Track';
 import type { GETPlaylist } from './APIManagement/Playlists/Interfaces/Playlist';
 import ListPlaylists from './Components/Playlists/ListPlaylists';
+import type { AddHistory } from './APIManagement/History/Interfaces/HistoryCreate';
 
 
 function App() {
@@ -54,14 +55,38 @@ function App() {
     };
   }
 
-  function incrementarReproduccions() {
+  async function incrementarReproduccions() {
     const tr = (prev: TrackView): TrackView => {
       return {
         ...prev,
         reproduccions: prev.reproduccions + 1
       }
     }
+
     setTrack(tr);
+
+    const newHistory: AddHistory = {
+      user: "95E30139-D7D4-4BBF-9293-495807DCD9CD",
+      track: tracks[0].id
+    }
+
+    const response: Response = await fetch(
+      "http://localhost:3000/tracks/user/history",
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(newHistory)
+      }
+    )
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const result = await response.json();
+
   }
 
   function handlePlay() {
