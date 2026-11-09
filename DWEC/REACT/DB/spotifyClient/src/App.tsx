@@ -11,6 +11,7 @@ import { ENV } from './Config/env';
 import type { GETTrack } from './APIManagement/Tracks/Interfaces/Track';
 import type { GETPlaylist } from './APIManagement/Playlists/Interfaces/Playlist';
 import ListPlaylists from './Components/Playlists/ListPlaylists';
+import PlaylistSongs from './Components/Playlists/PlaylistSongs';
 import type { AddHistory } from './APIManagement/History/Interfaces/HistoryCreate';
 
 
@@ -18,6 +19,10 @@ function App() {
 
   const [tracks, setTracks] = useState<GETTrack[]>([]);
   const [playlists, setPlaylists] = useState<GETPlaylist[]>([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<GETPlaylist | null>(null);
+  const [playlistTracks, setPlaylistTracks] = useState<GETTrack[]>([]);
+  const [playlistError, setPlaylistError] = useState<string | null>(null);
+  const [loadingPlaylist, setLoadingPlaylist] = useState(false);
   const [randomUser] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [track, setTrack] = useState<TrackView>(getRandomTrack);
   const [playingTrackTitle, setPlayingTrackTitle] = useState<string | null>(null);
@@ -32,6 +37,29 @@ function App() {
     const resposta: Response = await fetch(`${ENV.API_BASE_URL}/playlists`);
     const listPlaylist: GETPlaylist[] = await resposta.json() as GETPlaylist[];
     setPlaylists(listPlaylist);
+  }
+
+  async function seleccionarPlaylist(playlist: GETPlaylist) {
+    setPlaylistError(null);
+    setSelectedPlaylist(playlist);
+    setPlaylistTracks([]);
+    setLoadingPlaylist(true);
+
+    try {
+      const resposta: Response = await fetch(
+        `${ENV.API_BASE_URL}/playlists/${playlist.id}/tracks`
+      );
+      if (!resposta.ok) {
+        throw new Error(`Error carregant la playlist (${resposta.status})`);
+      }
+
+      const listTrack: GETTrack[] = await resposta.json() as GETTrack[];
+      setPlaylistTracks(listTrack);
+    } catch (error) {
+      setPlaylistError(error instanceof Error ? error.message : "Error carregant la playlist");
+    } finally {
+      setLoadingPlaylist(false);
+    }
   }
 
   useEffect(
@@ -162,10 +190,19 @@ function App() {
             <h2>Llistes de reproducció</h2>
             {
               playlists.length > 0 ?
-                <ListPlaylists playlists={playlists} />
+                <ListPlaylists playlists={playlists} onSelect={seleccionarPlaylist} />
                 : <p>No hi ha llistes de reproducció disponibles</p>
             }
           </section>
+          {selectedPlaylist && (
+            <PlaylistSongs
+              title={selectedPlaylist.title}
+              tracks={playlistTracks}
+              loading={loadingPlaylist}
+              error={playlistError}
+              play={handlePlay}
+            />
+          )}
         </aside>
 
         <section>

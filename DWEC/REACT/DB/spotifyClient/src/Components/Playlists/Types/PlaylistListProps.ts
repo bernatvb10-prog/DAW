@@ -2,4 +2,5 @@ import type { GETPlaylist } from "../../../APIManagement/Playlists/Interfaces/Pl
 
 export interface PlaylistListProps {
     playlists: GETPlaylist[];
+    onSelect: (playlist: GETPlaylist) => void;
 }
