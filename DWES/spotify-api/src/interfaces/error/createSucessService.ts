@@ -1,5 +1,5 @@
-export interface CreateSuccessService {
+export interface CreateSuccessService<T = number> {
     success: boolean;
     code: number;
-    data: Number;
+    data: T;
 }
