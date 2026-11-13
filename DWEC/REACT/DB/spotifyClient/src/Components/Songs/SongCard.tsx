@@ -30,6 +30,7 @@ const SongCard = (props: SongCardProps) => {
             <button
                 type="button"
                 onClick={handleClickLike}
+                disabled={props.likeDisabled}
             >
                 <img src={props.trackInfo.likes.like ? likeVerd : likeBlanc} alt="" width="24" height="24" />
             </button>

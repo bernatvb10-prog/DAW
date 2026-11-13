@@ -7,6 +7,9 @@ import { UpdateSuccessService } from "../interfaces/error/updateSuccessService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccessService";
 import { SelectSuccessService } from "../interfaces/error/selectSuccessService";
 import { addTrackUserHistory } from "../Services/historyService";
+import { addTrackUserLike, getTrackLikeSummary, getTrackLikeTotal } from "../Services/likeService";
+import { Like } from "../interfaces/like/like";
+import { TrackLikeSummary } from "../interfaces/like/trackLikeSummary";
 
 export async function getAllTracksController(_req: Request, res: Response): Promise<Response> {
     const tracks: TrackBD[] = await getAllTracks();
@@ -71,4 +74,20 @@ export async function postTrackUserHistoryController(req: Request, res: Response
 
     return res.status(result.code).json(result);
 
+}
+
+export async function postTrackUserLikeController(req: Request, res: Response): Promise<Response> {
+    const result: CreateSuccessService<TrackLikeSummary> | ErrorService = await addTrackUserLike(req.body as Like);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(errorResult.code).json({ message: errorResult.message });
+    }
+
+    return res.status(result.code).json(result);
+}
+
+export async function getTrackLikesController(req: Request, res: Response): Promise<Response> {
+    const totalLikes: number = await getTrackLikeTotal(req.params.id as string);
+    return res.status(200).json({ totalLikes });
 }

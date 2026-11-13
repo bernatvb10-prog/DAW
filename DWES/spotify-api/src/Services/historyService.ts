@@ -33,6 +33,7 @@ export async function addTrackUserHistory(historyTrack: History): Promise<Create
         return { success: false, code: 400, message: "Invalid data" };
     }
 
+
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
     const queryText: string = `INSERT INTO History(user_id, track_id)
