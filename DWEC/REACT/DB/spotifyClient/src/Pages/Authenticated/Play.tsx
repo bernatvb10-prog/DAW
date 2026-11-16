@@ -248,7 +248,7 @@ const Play = () => {
     return (
         <>
             <main>
-                <aside className="lists-panel">
+                <aside className="lists-panel play-lists-panel">
                     <section className="list-panel">
                         <h2>Cançons</h2>
                         {

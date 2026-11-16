@@ -65,7 +65,7 @@ const SongManagement = () => {
             {
                 newSong ?
                     <AddSongForm refreshSongs={carregarDadesTrack} />
-                    : <button onClick={addSong}> Nova</button>
+                    : <button className="add-song-button" onClick={addSong}> Nova</button>
             }
         </>
     )

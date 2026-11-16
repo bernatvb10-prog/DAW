@@ -1,17 +1,26 @@
 .lists-panel {
-  position: absolute;
-  right: 50px;
-  top: 150px;
+  position: static;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 1rem;
   max-width: calc(100vw - 2rem);
 }
 
+.play-lists-panel {
+  margin-top: 1rem;
+}
+
 .list-panel {
+  box-sizing: border-box;
+  max-width: 100%;
   border: 1px solid black;
   padding: 3px;
   overflow-x: auto;
+}
+
+.add-song-button {
+  margin-top: 1rem;
 }
 
 a {
@@ -20,7 +29,6 @@ a {
 
 @media (max-width: 640px) {
   .lists-panel {
-    position: static;
     margin: 1rem;
   }
 }
