@@ -5,6 +5,7 @@ import Header from './Components/PageEstructure/Header/Header'
 import Menu from './Components/PageEstructure/menu/Menu'
 import SongManagement from './Pages/Admin/SongManagement'
 
+// PUNT DE REFLEXIÓ
 
 function App() {
   return (
