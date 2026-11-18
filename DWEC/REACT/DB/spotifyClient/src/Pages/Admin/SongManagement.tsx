@@ -3,19 +3,24 @@ import type { GETTrack } from "../../APIManagement/Tracks/Interfaces/Track";
 import ListSongs from "../../Components/Songs/ListSongs";
 import { ENV } from "../../Config/env";
 import AddSongForm from "../../Components/Songs/AddSongForm";
+import type { FormState } from "./Types/FormState";
+import type { Track } from "../../Model/Track";
+import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
+import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
+import { PutTrack } from "../../APIManagement/Tracks/PutTrack";
 
 
 
 const SongManagement = () => {
     const [tracks, setTracks] = useState<GETTrack[]>([]);
-    const [newSong, setNewSong] = useState<boolean>(false);
+    const [newSong, setNewSong] = useState<FormState>({ mode: "none" });
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     async function carregarDadesTrack() {
         const resposta: Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
         const listTrack: GETTrack[] = await resposta.json() as GETTrack[];
+        console.log(listTrack);
         setTracks(listTrack);
-        // setNewSong(false);
     }
 
     useEffect(
@@ -24,7 +29,14 @@ const SongManagement = () => {
         }, []);
 
     function addSong() {
-        setNewSong(true);
+        setNewSong({ mode: "new" });
+    }
+
+    function edit(t: Track) {
+        setNewSong({
+            mode: "edit",
+            song: t
+        });
     }
 
     function handlePlay(track: GETTrack): void {
@@ -42,6 +54,19 @@ const SongManagement = () => {
         });
     }
 
+    async function save(t: TrackCreate) {
+        await PostTrack(t);
+        await carregarDadesTrack()
+        setNewSong({ mode: "none" });
+    }
+
+    async function update(t: TrackCreate) {
+        const id = newSong.mode === "edit" ? newSong.song.id : "";
+        await PutTrack(t, id);
+        await carregarDadesTrack()
+        setNewSong({ mode: "none" });
+    }
+
     return (
         <>
             <main>
@@ -53,7 +78,7 @@ const SongManagement = () => {
                             tracks.length > 0 ?
                                 <table>
                                     <tbody>
-                                        <ListSongs tracks={tracks} play={handlePlay} />
+                                        <ListSongs tracks={tracks} play={handlePlay} edit={edit} />
                                     </tbody>
                                 </table>
                                 : <p>No hi ha cançons disponibles</p>
@@ -63,9 +88,11 @@ const SongManagement = () => {
                 </aside>
             </main>
             {
-                newSong ?
-                    <AddSongForm refreshSongs={carregarDadesTrack} />
-                    : <button className="add-song-button" onClick={addSong}> Nova</button>
+                newSong.mode === "new" ?
+                    <AddSongForm submit={(t) => save(t)} />
+                    : newSong.mode === "edit" ?
+                        <AddSongForm submit={(t) => update(t)} song={newSong.song} />
+                        : <button className="add-song-button" onClick={addSong}> Afegir</button>
             }
         </>
     )

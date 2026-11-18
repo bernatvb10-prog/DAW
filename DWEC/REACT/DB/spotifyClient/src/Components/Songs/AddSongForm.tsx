@@ -2,7 +2,6 @@ import { useEffect, useState, type SubmitEvent } from "react";
 import { ENV } from "../../Config/env";
 import type { GETArtist } from "../../APIManagement/Artists/Interfaces/Artists";
 import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
-import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
 import type { AddSongFormProps } from "./Types/AddSongFormProps";
 
 const AddSongForm = (props: AddSongFormProps) => {
@@ -30,10 +29,7 @@ const AddSongForm = (props: AddSongFormProps) => {
             duration: Number(dades.get("duration"))
         }
 
-        console.log(song);
-        await PostTrack(song);
-        props.refreshSongs();
-
+        props.submit(song);
     }
 
     return (
@@ -43,32 +39,38 @@ const AddSongForm = (props: AddSongFormProps) => {
                 <p>
                     <label>
                         Títol:
-                        <input type="text" name="title" required />
+                        <input type="text" name="title" defaultValue={props.song?.title} required />
                     </label>
                 </p>
                 <p>
                     <label>
                         Duration:
-                        <input type="number" name="duration" required />
+                        <input type="number" name="duration" defaultValue={props.song?.duration} required />
                     </label>
                 </p>
                 <p>
                     <label>
                         Artista:
-                        <select name="artist">
-                            {
-                                artists.map(
-                                    (a: GETArtist) => (
-                                        <option key={a.id} value={a.id}>{a.name}</option>
-                                    )
-                                )
-                            }
-                        </select>
+                        {
+                            artists.length > 0
+                                ? <select name="artist"
+                                    defaultValue={props.song?.artist_id}
+                                >
+                                    {
+                                        artists.map(
+                                            (a: GETArtist) => (
+                                                <option key={a.id} value={a.id}>{a.name}</option>
+                                            )
+                                        )
+                                    }
+                                </select>
+                                : <></>
+                        }
                         <button>Add</button>
                     </label>
                 </p>
                 <button type="submit">Desa</button>
-            </form>
+            </form >
         </>
     )
 }
