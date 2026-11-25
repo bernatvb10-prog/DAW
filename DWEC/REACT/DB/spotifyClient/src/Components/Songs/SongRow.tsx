@@ -14,7 +14,7 @@ const SongRow = (props: SongRowProps) => {
             duration: props.duration
         };
 
-        props.edit(song);
+        props.edit?.(song);
     }
 
     return (
@@ -23,7 +23,8 @@ const SongRow = (props: SongRowProps) => {
             <td>{props.artist}</td>
             <td>{formatDuration(props.duration)}</td>
             <td><button type="button" onClick={props.play}>Play</button></td>
-            <td><button onClick={editar}>Edit</button></td>
+            {props.edit && <td><button type="button" onClick={editar}>Edit</button></td>}
+            {props.delete && <td><button type="button" onClick={props.delete}>Delete</button></td>}
         </tr>
     )
 }

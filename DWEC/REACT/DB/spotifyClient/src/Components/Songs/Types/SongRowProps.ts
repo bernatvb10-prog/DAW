@@ -7,5 +7,6 @@ export interface SongRowProps{
     artist_id: string;
     duration: number;
     play: () => void;
-    edit: (t: Track) => void;
+    edit?: (t: Track) => void;
+    delete?: () => void;
 }

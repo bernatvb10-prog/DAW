@@ -8,6 +8,7 @@ import type { Track } from "../../Model/Track";
 import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
 import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
 import { PutTrack } from "../../APIManagement/Tracks/PutTrack";
+import { DeleteTrack } from "../../APIManagement/Tracks/DeleteTrack";
 
 
 
@@ -67,6 +68,11 @@ const SongManagement = () => {
         setNewSong({ mode: "none" });
     }
 
+    async function deleteSong(track: GETTrack) {
+        await DeleteTrack(track.id);
+        await carregarDadesTrack();
+    }
+
     return (
         <>
             <main>
@@ -78,7 +84,7 @@ const SongManagement = () => {
                             tracks.length > 0 ?
                                 <table>
                                     <tbody>
-                                        <ListSongs tracks={tracks} play={handlePlay} edit={edit} />
+                                        <ListSongs tracks={tracks} play={handlePlay} edit={edit} delete={deleteSong} />
                                     </tbody>
                                 </table>
                                 : <p>No hi ha cançons disponibles</p>

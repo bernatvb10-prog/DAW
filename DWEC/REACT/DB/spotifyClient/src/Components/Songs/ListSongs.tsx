@@ -18,6 +18,7 @@ const ListSongs = (props: SongListProps) => {
                             duration={t.duration}
                             play={() => props.play(t)}
                             edit={props.edit}
+                            delete={props.delete ? () => props.delete?.(t) : undefined}
                         />
                     }
                 )
