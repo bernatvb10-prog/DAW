@@ -1,6 +1,6 @@
 import type { PlaylistListProps } from "./Types/PlaylistListProps";
 
-const ListPlaylists = ({ playlists, onSelect }: PlaylistListProps) => (
+const ListPlaylists = ({ playlists, onSelect, onDelete }: PlaylistListProps) => (
     <table>
         <tbody>
             {playlists.map((playlist) => (
@@ -10,6 +10,13 @@ const ListPlaylists = ({ playlists, onSelect }: PlaylistListProps) => (
                         <td>
                             <button type="button" onClick={() => onSelect(playlist)}>
                                 Select
+                            </button>
+                        </td>
+                    )}
+                    {onDelete && (
+                        <td>
+                            <button type="button" onClick={() => onDelete(playlist)}>
+                                Delete
                             </button>
                         </td>
                     )}

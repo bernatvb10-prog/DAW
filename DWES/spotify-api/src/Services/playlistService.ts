@@ -95,15 +95,28 @@ export async function putPlaylistById(
 
 export async function deletePlaylist(idPlaylist: string): Promise<DeleteSuccessService | ErrorService> {
     const pool: ConnectionPool = await getConnection();
-    const request: sql.Request = pool.request();
+    const transaction: sql.Transaction = new sql.Transaction(pool);
+    await transaction.begin();
+
+    const request: sql.Request = new sql.Request(transaction);
     request.input("id", sql.UniqueIdentifier, idPlaylist);
 
-    const queryText: string = `DELETE FROM Playlist WHERE id = @id`;
-    const result: IResult<number> = await request.query(queryText);
+    try {
+        await request.query(`DELETE FROM PlaylistTracks WHERE playlist_id = @id`);
 
-    if (result.rowsAffected[0] === 0) {
-        return { success: false, code: 404, message: "Playlist not found" };
+        const result: IResult<number> = await request.query(
+            `DELETE FROM Playlist WHERE id = @id`
+        );
+
+        if (result.rowsAffected[0] === 0) {
+            await transaction.rollback();
+            return { success: false, code: 404, message: "Playlist not found" };
+        }
+
+        await transaction.commit();
+        return { success: true, code: 204 };
+    } catch (error) {
+        await transaction.rollback();
+        throw error;
     }
-
-    return { success: true, code: 204 };
 }
