@@ -5,6 +5,7 @@ import Header from './Components/PageEstructure/Header/Header'
 import Menu from './Components/PageEstructure/menu/Menu'
 import SongManagement from './Pages/Admin/SongManagement'
 import PlaylistManagement from './Pages/Admin/PlaylistManagement'
+import ArtistManagement from './Pages/Admin/ArtistManagement'
 
 // PUNT DE REFLEXIÓ
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/Play" element={<Play />}></Route>
         <Route path="/SongManagement" element={<SongManagement />}></Route>
         <Route path="/PlaylistManagement" element={<PlaylistManagement />}></Route>
+        <Route path="/ArtistManagement" element={<ArtistManagement />}></Route>
       </Routes>
     </BrowserRouter>
   )
