@@ -16,7 +16,7 @@ const ListSongs = (props: SongListProps) => {
                             artist={t.artist}
                             artist_id={t.artist_id}
                             duration={t.duration}
-                            play={() => props.play(t)}
+                            play={props.play ? () => props.play?.(t) : undefined}
                             edit={props.edit}
                             delete={props.delete ? () => props.delete?.(t) : undefined}
                         />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { GETTrack } from "../../APIManagement/Tracks/Interfaces/Track";
 import ListSongs from "../../Components/Songs/ListSongs";
 import { ENV } from "../../Config/env";
@@ -15,7 +15,6 @@ import { DeleteTrack } from "../../APIManagement/Tracks/DeleteTrack";
 const SongManagement = () => {
     const [tracks, setTracks] = useState<GETTrack[]>([]);
     const [newSong, setNewSong] = useState<FormState>({ mode: "none" });
-    const audioRef = useRef<HTMLAudioElement | null>(null);
 
     async function carregarDadesTrack() {
         const resposta: Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
@@ -37,21 +36,6 @@ const SongManagement = () => {
         setNewSong({
             mode: "edit",
             song: t
-        });
-    }
-
-    function handlePlay(track: GETTrack): void {
-        const previewUrl = (track as GETTrack & { preview_url?: string | null }).preview_url;
-        if (!previewUrl) {
-            console.warn("This track does not have a playable preview.");
-            return;
-        }
-
-        audioRef.current?.pause();
-        const audio = new Audio(previewUrl);
-        audioRef.current = audio;
-        void audio.play().catch((error: unknown) => {
-            console.error("Unable to play the track:", error);
         });
     }
 
@@ -84,7 +68,7 @@ const SongManagement = () => {
                             tracks.length > 0 ?
                                 <table>
                                     <tbody>
-                                        <ListSongs tracks={tracks} play={handlePlay} edit={edit} delete={deleteSong} />
+                                        <ListSongs tracks={tracks} edit={edit} delete={deleteSong} />
                                     </tbody>
                                 </table>
                                 : <p>No hi ha cançons disponibles</p>
